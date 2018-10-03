@@ -1,0 +1,63 @@
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.exe
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.pdb
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\MySql.Data.dll
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csprojResolveAssemblyReference.cache
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Form1.resources
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Properties.Resources.resources
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csproj.GenerateResource.Cache
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.exe
+c:\users\joel.kollenberg\documents\visual studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.pdb
+C:\Users\Joel.Kollenberg\Documents\Visual Studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DataAdministration.resources
+C:\Users\Joel.Kollenberg\Documents\Visual Studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DatePicker.resources
+C:\Users\Joel.Kollenberg\Documents\Visual Studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\paste.png
+C:\Users\Joel.Kollenberg\Documents\Visual Studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\copy.png
+C:\Users\Joel.Kollenberg\Documents\Visual Studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\cut.png
+C:\Users\Joel.Kollenberg\Documents\Visual Studio 2010\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\remove.png
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\paste.png
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\copy.png
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\cut.png
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\remove.png
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.exe
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.pdb
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\MySql.Data.dll
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csprojResolveAssemblyReference.cache
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DataAdministration.resources
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DatePicker.resources
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Form1.resources
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Properties.Resources.resources
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csproj.GenerateResource.Cache
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.exe
+G:\Praktikum\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.pdb
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.exe
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.pdb
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\paste.png
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\copy.png
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\cut.png
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\remove.png
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.exe
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.pdb
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\MySql.Data.dll
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csprojResolveAssemblyReference.cache
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DataAdministration.resources
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DatePicker.resources
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Form1.resources
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Properties.Resources.resources
+C:\Users\Joel\Documents\Visual Studio 2015\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csproj.GenerateResource.Cache
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\paste.png
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\copy.png
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\cut.png
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\remove.png
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.exe
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.pdb
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\MySql.Data.dll
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csprojAssemblyReference.cache
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DataAdministration.resources
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.DatePicker.resources
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Form1.resources
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.Properties.Resources.resources
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csproj.GenerateResource.cache
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csproj.CoreCompileInputs.cache
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.csproj.CopyComplete
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.exe
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\obj\x86\Debug\WahlzettelAnalyse.pdb
+D:\Users\Joel\OneDrive\Dokumente\Visual Studio 2017\Projects\WahlzettelAnalyse\WahlzettelAnalyse\bin\Debug\WahlzettelAnalyse.exe.config
