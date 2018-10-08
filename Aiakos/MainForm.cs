@@ -7,8 +7,10 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Aiakos
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
+		public const string AppName = "Aiakos";
+
         public static Dictionary<int, Student> Students;
         public static Dictionary<int, Course> Courses;
         public static Dictionary<int, Choice> Choices;
@@ -27,19 +29,20 @@ namespace Aiakos
         private List<int>[] choiceNumbers = new List<int>[3];
         private int highestColumn, count;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
+			Text = AppName;
             WindowState = FormWindowState.Maximized;
 			ServerConfiguration.ReadServerData();
 
             if (ServerConfiguration.DefaultServer.ServerAvailable)
-                init();
+                Initialise();
             else
 				RequestServerData(false);
         }
 
-        private void init()
+        private void Initialise()
         {
             Data = new DataAccess(ServerConfiguration.DefaultServer);
             Data.FillData(out Students, out Courses, out Choices);
@@ -180,7 +183,7 @@ namespace Aiakos
         private void datenAktualisierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ServerConfiguration.DefaultServer.ServerAvailable)
-                init();
+                Initialise();
             else
 				RequestServerData(true);
         }
@@ -191,7 +194,7 @@ namespace Aiakos
             dataAd.ShowDialog();
 
             if (dataAd.Apply)
-                init();
+                Initialise();
         }
 
 		private void RequestServerData(bool error)
@@ -201,7 +204,7 @@ namespace Aiakos
 
 			ServerConfigurationGUI.ShowDialog();
 			if (ServerConfigurationGUI.Confirmed)
-				init();
+				Initialise();
 		}
     }
 }

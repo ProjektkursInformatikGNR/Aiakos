@@ -53,7 +53,7 @@ namespace Aiakos
             courseView.RowHeadersVisible = false;
             courseView.CellMouseDown += new DataGridViewCellMouseEventHandler(courseView_CellMouseDown);
 
-            foreach (KeyValuePair<int, Course> course in Form1.Courses ?? new Dictionary<int, Course>())
+            foreach (KeyValuePair<int, Course> course in MainForm.Courses ?? new Dictionary<int, Course>())
             {
                 DataGridViewRow row = (DataGridViewRow)courseView.Rows[0].Clone();
                 row.SetValues(new string[] {
@@ -75,7 +75,7 @@ namespace Aiakos
             studentView.CellMouseDown += new DataGridViewCellMouseEventHandler(studentView_CellMouseDown);
             studentView.CellClick += new DataGridViewCellEventHandler(studentView_CellClick);
 
-            foreach (KeyValuePair<int, Student> student in Form1.Students ?? new Dictionary<int, Student>())
+            foreach (KeyValuePair<int, Student> student in MainForm.Students ?? new Dictionary<int, Student>())
             {
                 DataGridViewRow row = (DataGridViewRow)studentView.Rows[0].Clone();
                 row.SetValues(new string[] {
@@ -97,22 +97,22 @@ namespace Aiakos
             choiceView.RowHeadersVisible = false;
             choiceView.CellMouseDown += new DataGridViewCellMouseEventHandler(choiceView_CellMouseDown);
 
-            ((DataGridViewComboBoxColumn)choiceView.Columns[0]).Items.AddRange(Form1.Students.Values.ToArray());
+            ((DataGridViewComboBoxColumn)choiceView.Columns[0]).Items.AddRange(MainForm.Students.Values.ToArray());
 			((DataGridViewComboBoxColumn)choiceView.Columns[1]).Items.Add("(keine)");
-			((DataGridViewComboBoxColumn)choiceView.Columns[1]).Items.AddRange(Form1.Courses.Values.ToArray());
+			((DataGridViewComboBoxColumn)choiceView.Columns[1]).Items.AddRange(MainForm.Courses.Values.ToArray());
 			((DataGridViewComboBoxColumn)choiceView.Columns[2]).Items.Add("(keine)");
-			((DataGridViewComboBoxColumn)choiceView.Columns[2]).Items.AddRange(Form1.Courses.Values.ToArray());
+			((DataGridViewComboBoxColumn)choiceView.Columns[2]).Items.AddRange(MainForm.Courses.Values.ToArray());
 			((DataGridViewComboBoxColumn)choiceView.Columns[3]).Items.Add("(keine)");
-			((DataGridViewComboBoxColumn)choiceView.Columns[3]).Items.AddRange(Form1.Courses.Values.ToArray());
+			((DataGridViewComboBoxColumn)choiceView.Columns[3]).Items.AddRange(MainForm.Courses.Values.ToArray());
 
-			foreach (KeyValuePair<int, Choice> choice in Form1.Choices)
+			foreach (KeyValuePair<int, Choice> choice in MainForm.Choices)
 			{
 				DataGridViewRow row = (DataGridViewRow)choiceView.Rows[0].Clone();
 				row.SetValues(new object[] {
-					Form1.Students[choice.Value.StudentId],
-					choice.Value.CourseId1.HasValue ? Form1.Courses[choice.Value.CourseId1.Value] as object : defaultValue,
-					choice.Value.CourseId2.HasValue ? Form1.Courses[choice.Value.CourseId2.Value] as object : defaultValue,
-					choice.Value.CourseId3.HasValue ? Form1.Courses[choice.Value.CourseId3.Value] as object : defaultValue});
+					MainForm.Students[choice.Value.StudentId],
+					choice.Value.CourseId1.HasValue ? MainForm.Courses[choice.Value.CourseId1.Value] as object : defaultValue,
+					choice.Value.CourseId2.HasValue ? MainForm.Courses[choice.Value.CourseId2.Value] as object : defaultValue,
+					choice.Value.CourseId3.HasValue ? MainForm.Courses[choice.Value.CourseId3.Value] as object : defaultValue});
 				row.Tag = choice.Value.StudentId;
 				choiceView.Rows.Add(row);
 			}
@@ -430,7 +430,7 @@ namespace Aiakos
 					row.Cells["Column10"].Value is Course ? (row.Cells["Column10"].Value as Course).Id as int? : null));
             }
 
-            Form1.Data.UpdateDatabase(ref courses, ref students, ref choices);
+            MainForm.Data.UpdateDatabase(ref courses, ref students, ref choices);
         }
 
 		public bool Apply { get; private set; }
@@ -446,16 +446,16 @@ namespace Aiakos
                     switch (e.ColumnIndex)
                     {
                         case 0:
-                            cell.Value = Array.Find(Form1.Students.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
+                            cell.Value = Array.Find(MainForm.Students.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
                             break;
                         case 1:
-                            cell.Value = Array.Find(Form1.Courses.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
+                            cell.Value = Array.Find(MainForm.Courses.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
                             break;
 						case 2:
-							cell.Value = Array.Find(Form1.Courses.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
+							cell.Value = Array.Find(MainForm.Courses.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
 							break;
 						case 3:
-							cell.Value = Array.Find(Form1.Courses.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
+							cell.Value = Array.Find(MainForm.Courses.Values.ToArray(), a => a.ToString() == cell.Value.ToString());
 							break;
 					}
                 }

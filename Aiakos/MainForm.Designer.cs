@@ -1,6 +1,6 @@
 ﻿namespace Aiakos
 {
-	partial class Form1
+	partial class MainForm
 	{
 		/// <summary>
 		/// Erforderliche Designervariable.
@@ -43,9 +43,9 @@
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.dateiToolStripMenuItem,
-			this.einstellungenToolStripMenuItem,
-			this.analyseToolStripMenuItem});
+            this.dateiToolStripMenuItem,
+            this.einstellungenToolStripMenuItem,
+            this.analyseToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(884, 24);
@@ -55,8 +55,8 @@
 			// dateiToolStripMenuItem
 			// 
 			this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.datenAktualisierenToolStripMenuItem,
-			this.beendenToolStripMenuItem});
+            this.datenAktualisierenToolStripMenuItem,
+            this.beendenToolStripMenuItem});
 			this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
 			this.dateiToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
 			this.dateiToolStripMenuItem.Text = "Datei";
@@ -80,8 +80,8 @@
 			// einstellungenToolStripMenuItem
 			// 
 			this.einstellungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.datenverwaltungToolStripMenuItem,
-			this.serverkonfigurationToolStripMenuItem});
+            this.datenverwaltungToolStripMenuItem,
+            this.serverkonfigurationToolStripMenuItem});
 			this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
 			this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
 			this.einstellungenToolStripMenuItem.Text = "Einstellungen";
@@ -105,7 +105,7 @@
 			// analyseToolStripMenuItem
 			// 
 			this.analyseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.wahlzuweisungVorschlagenToolStripMenuItem});
+            this.wahlzuweisungVorschlagenToolStripMenuItem});
 			this.analyseToolStripMenuItem.Name = "analyseToolStripMenuItem";
 			this.analyseToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
 			this.analyseToolStripMenuItem.Text = "Analyse";
@@ -117,7 +117,7 @@
 			this.wahlzuweisungVorschlagenToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
 			this.wahlzuweisungVorschlagenToolStripMenuItem.Text = "Wahlzuweisung vorschlagen";
 			// 
-			// Form1
+			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -125,8 +125,7 @@
 			this.ClientSize = new System.Drawing.Size(884, 662);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
-			this.Name = "Form1";
-			this.Text = "Wahlzettel-Analyse";
+			this.Name = "MainForm";
 			this.Click += new System.EventHandler(this.beendenToolStripMenuItem_Click);
 			this.Resize += new System.EventHandler(this.Form1_Resize);
 			this.menuStrip1.ResumeLayout(false);

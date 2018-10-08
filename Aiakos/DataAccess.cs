@@ -85,7 +85,7 @@ namespace Aiakos
         {
             int count = 0;
 
-            foreach (Choice choice in Form1.Choices.Values)
+            foreach (Choice choice in MainForm.Choices.Values)
                 if (choice.Courses[priority] == courseId)
                     count++;
 

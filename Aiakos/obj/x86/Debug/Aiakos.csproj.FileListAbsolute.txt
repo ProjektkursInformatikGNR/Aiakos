@@ -27,10 +27,10 @@ D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\bin\Debug\MySql.Data.dll
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.csprojAssemblyReference.cache
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.DataAdministration.resources
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.DatePicker.resources
-D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.Form1.resources
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.Properties.Resources.resources
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.csproj.GenerateResource.cache
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.csproj.CoreCompileInputs.cache
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.csproj.CopyComplete
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.exe
 D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.pdb
+D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.MainForm.resources
