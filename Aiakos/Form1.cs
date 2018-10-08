@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using MySql.Data.MySqlClient;
-using System.Drawing.Drawing2D;
 
 namespace Aiakos
 {
@@ -18,19 +13,19 @@ namespace Aiakos
         public static Dictionary<int, Course> Courses;
         public static Dictionary<int, Choice> Choices;
 		
-        public static DataAccess da;
+        public static DataAccess Data;
 
-        Chart chart = new Chart();
-        ChartArea chartArea = new ChartArea();
-        Series[] series = new Series[3];
-        Color[] colors = { Color.FromArgb(255, 0, 0, 255), Color.FromArgb(126, 0, 0, 255), Color.FromArgb(40, 0, 0, 255) };
-        HorizontalLineAnnotation[][] annotations;
-        Legend legend = new Legend("Legend");
-        Title title;
+        private Chart chart = new Chart();
+        private ChartArea chartArea = new ChartArea();
+        private Series[] series = new Series[3];
+        private Color[] colors = { Color.FromArgb(255, 0, 0, 255), Color.FromArgb(126, 0, 0, 255), Color.FromArgb(40, 0, 0, 255) };
+        private HorizontalLineAnnotation[][] annotations;
+        private Legend legend = new Legend("Legend");
+        private Title title;
 
-        List<string> courseNames = new List<string>();
-        List<int>[] choiceNumbers = new List<int>[3];
-        int highestColumn, count;
+        private List<string> courseNames = new List<string>();
+        private List<int>[] choiceNumbers = new List<int>[3];
+        private int highestColumn, count;
 
         public Form1()
         {
@@ -41,16 +36,13 @@ namespace Aiakos
             if (ServerConfiguration.DefaultServer.ServerAvailable)
                 init();
             else
-            {
-                MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				UpdateData();
-            }
+				RequestServerData(false);
         }
 
         private void init()
         {
-            da = new DataAccess(ServerConfiguration.DefaultServer);
-            da.FillData(out Students, out Courses, out Choices);
+            Data = new DataAccess(ServerConfiguration.DefaultServer);
+            Data.FillData(out Students, out Courses, out Choices);
 
             chart.ChartAreas.Clear();
             chart.Titles.Clear();
@@ -63,18 +55,14 @@ namespace Aiakos
 
             courseNames = new List<string>();
             foreach (KeyValuePair<int, Course> course in Courses)
-            {
                 courseNames.Add(course.Value.Name);
-            }
 
             for (int priority = 0; priority < 3; priority++)
-            {
+			{
                 choiceNumbers[priority] = new List<int>();
 
-                foreach (KeyValuePair<int, Course> course in Courses)
-                {
-                    choiceNumbers[priority].Add(da.GetChoiceNumber(course.Key, priority));
-                }
+                foreach (int courseId in Courses.Keys)
+                    choiceNumbers[priority].Add(Data.GetChoiceNumber(courseId, priority));
             }
 
             annotations = new HorizontalLineAnnotation[Courses.Count][];
@@ -109,16 +97,10 @@ namespace Aiakos
                     string toolTip = course.Value.Name + " - " + (priority + 1) + ". Wahl:";
 
                     foreach (Choice c in Choices.Values)
-                    {
                         if (c.Courses[priority] == course.Key)
-                        {
                             foreach (KeyValuePair<int, Student> student in Students)
-                            {
                                 if (c.StudentId == student.Key)
                                     toolTip += "\n" + student.Value.ToString();
-                            }
-                        }
-                    }
 
                     series[priority].Points[count++].ToolTip = toolTip;
                 }
@@ -130,20 +112,14 @@ namespace Aiakos
             foreach (KeyValuePair<int, Course> course in Courses)
             {
                 if (choiceNumbers[0][count] + choiceNumbers[1][count] + choiceNumbers[2][count] > highestColumn)
-                {
                     highestColumn = choiceNumbers[0][count] + choiceNumbers[1][count] + choiceNumbers[2][count];
-                }
 
                 count++;
             }
 
             foreach (KeyValuePair<int, Course> course in Courses)
-            {
                 if (course.Value.MaxStudents > highestColumn)
-                {
                     highestColumn = course.Value.MaxStudents;
-                }
-            }
             chartArea.AxisY.Maximum = highestColumn;
 
             legend.Font = new Font("Arial", 10);
@@ -198,7 +174,7 @@ namespace Aiakos
 
         private void serverkonfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-			UpdateData();
+			RequestServerData(false);
         }
 
         private void datenAktualisierenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -206,25 +182,24 @@ namespace Aiakos
             if (ServerConfiguration.DefaultServer.ServerAvailable)
                 init();
             else
-            {
-                MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				UpdateData();
-            }
+				RequestServerData(true);
         }
 
         private void datenverwaltungToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataAdministration dataAd = new DataAdministration(ref da);
+            DataAdministration dataAd = new DataAdministration(ref Data);
             dataAd.ShowDialog();
 
             if (dataAd.Apply)
                 init();
         }
 
-		private void UpdateData()
+		private void RequestServerData(bool error)
 		{
-			ServerConfigurationGUI.ShowDialog();
+			if (error)
+				MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+			ServerConfigurationGUI.ShowDialog();
 			if (ServerConfigurationGUI.Confirmed)
 				init();
 		}

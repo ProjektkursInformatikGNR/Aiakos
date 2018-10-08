@@ -55,9 +55,9 @@ namespace Aiakos
             {
 				choices.Add(int.Parse(row[0].ToString()),
 					new Choice(int.Parse(row[0].ToString()),
-					int.Parse(row[1].ToString()),
-					int.Parse(row[2].ToString()),
-					int.Parse(row[3].ToString())
+					string.IsNullOrEmpty(row[1]?.ToString()) ? null : int.Parse(row[1].ToString()) as int?,
+					string.IsNullOrEmpty(row[2]?.ToString()) ? null : int.Parse(row[2].ToString()) as int?,
+					string.IsNullOrEmpty(row[3]?.ToString()) ? null : int.Parse(row[3].ToString()) as int?
 				));
 			}
         }
@@ -76,7 +76,7 @@ namespace Aiakos
 
 			new MySqlCommand("DELETE FROM choices;", connection).ExecuteNonQuery();
 			foreach (Choice choice in choices)
-				new MySqlCommand(string.Format("REPLACE INTO choices SET `studentId`={0}, `courseId1`={1}, `courseId2`={2}, `courseId3`={3};", choice.StudentId, choice.CourseId1, choice.CourseId2, choice.CourseId3), connection).ExecuteNonQuery();
+				new MySqlCommand(string.Format("REPLACE INTO choices SET `studentId`={0}, `courseId1`={1}, `courseId2`={2}, `courseId3`={3};", choice.StudentId, choice.CourseId1.HasValue ? choice.CourseId1.Value.ToString() : "NULL", choice.CourseId2.HasValue ? choice.CourseId2.Value.ToString() : "NULL", choice.CourseId3.HasValue ? choice.CourseId3.Value.ToString() : "NULL"), connection).ExecuteNonQuery();
 
             connection.Close();
         }

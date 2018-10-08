@@ -12,7 +12,7 @@
 		/// <param name="courseId1">Datenbank-ID des erstgewählten Course</param>
 		/// <param name="courseId2">Datenbank-ID des zweitgewählten Course</param>
 		/// <param name="courseId3">Datenbank-ID des drittgewählten Course</param>
-		public Choice(int studentId, int courseId1, int courseId2, int courseId3)
+		public Choice(int studentId, int? courseId1, int? courseId2, int? courseId3)
         {
 			StudentId = studentId;
 			CourseId1 = courseId1;
@@ -28,26 +28,26 @@
 		/// <summary>
 		/// Datenbank-ID des erstgewählten Course
 		/// </summary>
-		public int CourseId1 { get; set; }
+		public int? CourseId1 { get; set; }
 
 		/// <summary>
 		/// Datenbank-ID des zweitgewählten Course
 		/// </summary>
-		public int CourseId2 { get; set; }
+		public int? CourseId2 { get; set; }
 
 		/// <summary>
 		/// Datenbank-ID des drittgewählten Course
 		/// </summary>
-		public int CourseId3 { get; set; }
+		public int? CourseId3 { get; set; }
 
 		/// <summary>
 		/// Gibt die Datenbank-IDs aller gewählten Courses als Array nach aufsteigender Priorität geordnet wieder.
 		/// </summary>
-		public int[] Courses
+		public int?[] Courses
 		{
 			get
 			{
-				return new int[] { CourseId1, CourseId2, CourseId3 };
+				return new int?[] { CourseId1, CourseId2, CourseId3 };
 			}
 		}
 
