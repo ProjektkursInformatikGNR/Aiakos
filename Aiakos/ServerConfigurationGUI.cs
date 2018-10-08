@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.Reflection;
-using System.IO;
-using MySql.Data.MySqlClient;
+﻿using System.Windows.Forms;
 
 namespace Aiakos
 {
@@ -20,13 +9,10 @@ namespace Aiakos
             apply = new Button() { Text = "Übernehmen", Left = 240, Width = 100, Top = 220 },
             cancel = new Button { Text = "Abbrechen", Left = 130, Width = 100, Top = 220 };
         private static ServerPanel defaultServer;
-        private static bool confirmed;
-        private static Server server;
 
-        public static void showDialog(Server svr)
+        public static void ShowDialog()
         {
-            confirmed = false;
-			server = svr;
+            Confirmed = false;
 
             prompt = new Form();
             prompt.Width = 480;
@@ -38,13 +24,10 @@ namespace Aiakos
             prompt.MinimizeBox = false;
             prompt.ShowInTaskbar = false;
 
-            defaultServer = new ServerPanel(server) { Text = "Standardmäßiger Server", Top = 10, Left = 10 };
+            defaultServer = new ServerPanel() { Text = "Standardmäßiger Server", Top = 10, Left = 10 };
             prompt.Controls.Add(defaultServer);
 
-            connect.Click += (sender, e) =>
-            {
-                connectToServer();
-            };
+            connect.Click += (sender, e) => ConnectToServer();
             prompt.Controls.Add(connect);
 
             apply.Click += (sender, e) =>
@@ -66,13 +49,13 @@ namespace Aiakos
             prompt.ShowDialog();
         }
 
-        public static void connectToServer()
+        public static void ConnectToServer()
         {
-            if (!confirmed)
+            if (!Confirmed)
             {
                 prompt.Cursor = Cursors.WaitCursor;
 
-                confirmed = true;
+                Confirmed = true;
                 ServerConfiguration.DefaultServer = defaultServer.Server;
 				ServerConfiguration.WriteServerData();
 
@@ -88,14 +71,11 @@ namespace Aiakos
                     prompt.Controls.Clear();
                     prompt.Close();
                     prompt.Cursor = Cursors.Default;
-                    showDialog(ServerConfiguration.DefaultServer);
+                    ShowDialog();
                 }
             }
         }
 
-        public static bool Confirmation
-        {
-            get { return confirmed; }
-        }
+        public static bool Confirmed { get; private set; }
     }
 }

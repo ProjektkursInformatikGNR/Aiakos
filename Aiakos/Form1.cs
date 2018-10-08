@@ -35,20 +35,15 @@ namespace Aiakos
         public Form1()
         {
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;
+            WindowState = FormWindowState.Maximized;
 			ServerConfiguration.ReadServerData();
 
             if (ServerConfiguration.DefaultServer.ServerAvailable)
-            {
-                this.init();
-            }
+                init();
             else
             {
                 MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ServerConfigurationGUI.showDialog(ServerConfiguration.DefaultServer);
-
-                if (ServerConfigurationGUI.Confirmation)
-                    init();
+				UpdateData();
             }
         }
 
@@ -62,9 +57,9 @@ namespace Aiakos
             chart.Series.Clear();
             chart.Annotations.Clear();
             chart.Legends.Clear();
-            this.Controls.Clear();
+            Controls.Clear();
 
-            this.Controls.Add(menuStrip1);
+            Controls.Add(menuStrip1);
 
             courseNames = new List<string>();
             foreach (KeyValuePair<int, Course> course in Courses)
@@ -156,7 +151,7 @@ namespace Aiakos
             chart.Legends.Add(legend);
 
             chart.Invalidate();
-            this.Controls.Add(chart);
+            Controls.Add(chart);
         }
 
         private void Chart_PostPaint(object sender, ChartPaintEventArgs e)
@@ -189,9 +184,9 @@ namespace Aiakos
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (this.Height >= 60)
-                chart.Height = this.Height - 60;
-            chart.Width = this.Width;
+            if (Height >= 60)
+                chart.Height = Height - 60;
+            chart.Width = Width;
             chart.Top = 22;
             chart.Invalidate();
         }
@@ -203,22 +198,17 @@ namespace Aiakos
 
         private void serverkonfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ServerConfigurationGUI.showDialog(ServerConfiguration.DefaultServer);
-
-            if (ServerConfigurationGUI.Confirmation)
-                init();
+			UpdateData();
         }
 
         private void datenAktualisierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (ServerConfiguration.DefaultServer.ServerAvailable)
-            {
-                this.init();
-            }
+                init();
             else
             {
                 MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				serverkonfigurationToolStripMenuItem_Click(sender, e);
+				UpdateData();
             }
         }
 
@@ -228,7 +218,15 @@ namespace Aiakos
             dataAd.ShowDialog();
 
             if (dataAd.Apply)
-                this.init();
+                init();
         }
+
+		private void UpdateData()
+		{
+			ServerConfigurationGUI.ShowDialog();
+
+			if (ServerConfigurationGUI.Confirmed)
+				init();
+		}
     }
 }
