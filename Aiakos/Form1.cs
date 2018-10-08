@@ -38,7 +38,7 @@ namespace Aiakos
             this.WindowState = FormWindowState.Maximized;
 			ServerConfiguration.ReadServerData();
 
-            if (DataAccess.ConnectionValid(ServerConfiguration.DefaultServer))
+            if (ServerConfiguration.DefaultServer.ServerAvailable)
             {
                 this.init();
             }
@@ -211,7 +211,7 @@ namespace Aiakos
 
         private void datenAktualisierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (DataAccess.ConnectionValid(ServerConfiguration.DefaultServer))
+            if (ServerConfiguration.DefaultServer.ServerAvailable)
             {
                 this.init();
             }

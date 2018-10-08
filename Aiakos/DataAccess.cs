@@ -5,13 +5,16 @@ using MySql.Data.MySqlClient;
 
 namespace Aiakos
 {
+	/// <summary>
+	/// Die Klasse <c>DataAccess</c> bezieht die Daten aus der MySQL-Datenbank und konvertiert sie.
+	/// </summary>
     public class DataAccess
     {
-        private MySqlConnection connection;
+        private MySqlConnection connection; //Die Verbindung zum MySQL-Server
 
         public DataAccess(Server server)
         {
-            connection = new MySqlConnection(string.Format("server={0};uid={1};pwd={2};database={3};port={4};", server.Host, server.UserId, server.Password, server.Database, server.Port));
+            connection = new MySqlConnection(server.ToString());
         }
 		
         public object[][] GetData(string cmd)
@@ -87,23 +90,6 @@ namespace Aiakos
                     count++;
 
             return count;
-        }
-
-        public static bool ConnectionValid(Server server)
-        {
-            try
-            {
-                MySqlConnection con = new MySqlConnection(string.Format("server={0};uid={1};pwd={2};database={3};port={4};", server.Host, server.UserId, server.Password, server.Database, server.Port));
-				con.Open();
-                con.CreateCommand();
-                con.Close();
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

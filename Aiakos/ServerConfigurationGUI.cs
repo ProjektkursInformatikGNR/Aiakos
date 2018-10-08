@@ -76,7 +76,7 @@ namespace Aiakos
                 ServerConfiguration.DefaultServer = defaultServer.Server;
 				ServerConfiguration.WriteServerData();
 
-                if (DataAccess.ConnectionValid(defaultServer.Server))
+                if (defaultServer.Server.ServerAvailable)
                 {
                     prompt.Controls.Clear();
                     prompt.Close();

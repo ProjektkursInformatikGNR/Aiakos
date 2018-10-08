@@ -3,7 +3,7 @@
 namespace Aiakos
 {
 	/// <summary>
-	/// Die Klasse Student bildet eine Schülerin bzw. einen Schüler mit ihren bzw. seinen Attributen ab.
+	/// Die Klasse <c>Student</c> bildet eine Schülerin bzw. einen Schüler mit ihren bzw. seinen Attributen ab.
 	/// </summary>
 	public class Student
 	{

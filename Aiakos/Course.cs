@@ -1,7 +1,7 @@
 ﻿namespace Aiakos
 {
 	/// <summary>
-	/// Die Klasse Course bildet einen Stärken- bzw. Förderkurs oder eine AG ab.
+	/// Die Klasse <c>Course</c> bildet einen Stärken- bzw. Förderkurs oder eine AG ab.
 	/// </summary>
     public class Course
     {

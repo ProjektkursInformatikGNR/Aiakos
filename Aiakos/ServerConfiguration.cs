@@ -100,7 +100,7 @@ namespace Aiakos
 				{
 					reader.Read();
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					return null;
 				}

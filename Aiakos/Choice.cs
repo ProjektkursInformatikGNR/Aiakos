@@ -1,7 +1,7 @@
 ﻿namespace Aiakos
 {
 	/// <summary>
-	/// Die Klasse Choice bildet eine Zusammenstellung der Wahlen einer Schülerin bzw. eines Schülers ab.
+	/// Die Klasse <c>Choice</c> bildet eine Zusammenstellung der Wahlen einer Schülerin bzw. eines Schülers ab.
 	/// </summary>
     public class Choice
     {
