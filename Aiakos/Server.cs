@@ -99,10 +99,11 @@ namespace Aiakos
 
 				try
 				{
-					MySqlConnection con = new MySqlConnection(ToString());
-					con.Open();
-					con.CreateCommand();
-					con.Close();
+					using (MySqlConnection con = new MySqlConnection(ToString()))
+					{
+						con.Open();
+						new MySqlCommand($"USE {Database};", con).ExecuteNonQuery();
+					}
 				}
 				catch (Exception)
 				{
