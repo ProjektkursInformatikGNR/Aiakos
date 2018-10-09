@@ -430,7 +430,7 @@ namespace Aiakos
 					row.Cells["Column10"].Value is Course ? (row.Cells["Column10"].Value as Course).Id as int? : null));
             }
 
-            MainForm.Data.UpdateDatabase(ref courses, ref students, ref choices);
+            MainForm.Data.UpdateDatabase(ref students, ref courses, ref choices);
         }
 
 		public bool Apply { get; private set; }

@@ -1,81 +1,118 @@
-﻿using System.Windows.Forms;
+﻿using System.Threading;
+using System.Windows.Forms;
 
 namespace Aiakos
 {
-    public static class ServerConfigurationGUI
-    {
-        private static Form prompt;
-        private static Button connect = new Button() { Text = "Verbinden", Left = 350, Width = 100, Top = 220 },
-            apply = new Button() { Text = "Übernehmen", Left = 240, Width = 100, Top = 220 },
-            cancel = new Button { Text = "Abbrechen", Left = 130, Width = 100, Top = 220 };
-        private static ServerPanel defaultServer;
+	/// <summary>
+	/// Die Klasse <c>ServerConfigurationGUI</c> stellt ein Fenster zum Eingabedialog der Serverdaten dar.
+	/// </summary>
+    public class ServerConfigurationGUI : Form
+	{
+		public bool Confirmed { get; private set; }
 
-        public static void ShowDialog()
+		private Button _connect, _apply, _cancel; //Die Buttons in der Benutzeroberfläche
+        private ServerPanel _serverPanel; //Die GroupBox mit den Eingabefeldern für die Serverdaten
+		private Thread _checkConnection;
+
+		/// <summary>
+		/// Erzeugt ein neues Fenster zur Eingabe der Serverdaten.
+		/// </summary>
+		public ServerConfigurationGUI()
         {
             Confirmed = false;
+			
+            Width = 480;
+            Height = 300;
+            Text = "Serverkonfiguration";
+            StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
+			
+            Controls.Add(_serverPanel = new ServerPanel() { Text = "Datenbankinformationen", Top = 10, Left = 10 });
 
-            prompt = new Form();
-            prompt.Width = 480;
-            prompt.Height = 300;
-            prompt.Text = "Serverkonfiguration";
-            prompt.StartPosition = FormStartPosition.CenterScreen;
-            prompt.FormBorderStyle = FormBorderStyle.FixedDialog;
-            prompt.MaximizeBox = false;
-            prompt.MinimizeBox = false;
-            prompt.ShowInTaskbar = false;
+			_connect = new Button() { Text = "Verbinden", Left = 350, Width = 100, Top = 220 };
+			_connect.Click += (sender, e) => StartConnect();
+            Controls.Add(_connect);
 
-            defaultServer = new ServerPanel() { Text = "Standardmäßiger Server", Top = 10, Left = 10 };
-            prompt.Controls.Add(defaultServer);
-
-            connect.Click += (sender, e) => ConnectToServer();
-            prompt.Controls.Add(connect);
-
-            apply.Click += (sender, e) =>
+			_apply = new Button() { Text = "Übernehmen", Left = 240, Width = 100, Top = 220 };
+			_apply.Click += (sender, e) =>
             {
-                ServerConfiguration.DefaultServer = defaultServer.Server;
-				ServerConfiguration.WriteServerData();
-                prompt.Controls.Clear();
-                prompt.Close();
+                ServerConfiguration.DefaultServer = _serverPanel.Result;
             };
-            prompt.Controls.Add(apply);
+            Controls.Add(_apply);
 
-            cancel.Click += (sender, e) =>
+			_cancel = new Button { Text = "Abbrechen", Left = 130, Width = 100, Top = 220 };
+			_cancel.Click += (sender, e) =>
             {
-                prompt.Controls.Clear();
-                prompt.Close();
+				if (_checkConnection != null && _checkConnection.IsAlive)
+				{
+					_checkConnection.Abort();
+					CheckingFinished(true);
+				}
+				else
+				{
+					Controls.Clear();
+					Close();
+				}
             };
-            prompt.Controls.Add(cancel);
+            Controls.Add(_cancel);
 
-            prompt.ShowDialog();
+			FormClosing += (sender, e) =>
+			{
+				if (_checkConnection != null && _checkConnection.IsAlive)
+				{
+					_checkConnection.Abort();
+					CheckingFinished(true);
+					e.Cancel = true;
+				}
+			};
+			
+			ShowDialog();
         }
 
-        public static void ConnectToServer()
+		/// <summary>
+		/// Beginnt, die Verbindung zum Server zu testen.
+		/// </summary>
+        public void StartConnect()
         {
-            if (!Confirmed)
-            {
-                prompt.Cursor = Cursors.WaitCursor;
+            Cursor = Cursors.WaitCursor;
+			_serverPanel.Enabled = false;
+			_apply.Enabled = false;
+			_connect.Enabled = false;
 
-                Confirmed = true;
-                ServerConfiguration.DefaultServer = defaultServer.Server;
-				ServerConfiguration.WriteServerData();
+			_checkConnection = new Thread(new ThreadStart(() =>
+			{
+				Confirmed = _serverPanel.Result.Available;
+				CheckingFinished(false);
+			}));
+			_checkConnection.Start();
+		}
 
-                if (defaultServer.Server.ServerAvailable)
-                {
-                    prompt.Controls.Clear();
-                    prompt.Close();
-                    prompt.Cursor = Cursors.Default;
-                }
-                else
-                {
-                    MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    prompt.Controls.Clear();
-                    prompt.Close();
-                    prompt.Cursor = Cursors.Default;
-                    ShowDialog();
-                }
-            }
-        }
+		/// <summary>
+		/// Wird aufgerufen, wenn die Überprüfung der Serververbindung abgeschlossen ist.
+		/// </summary>
+		/// <param name="cancelled">Ist <code>TRUE</code>, wenn der Test beendet wurde, oder <code>FALSE</code>, wenn er abgebrochen wurde.</param>
+		private void CheckingFinished(bool cancelled)
+		{
+			BeginInvoke(new MethodInvoker(() =>
+			{
+				if (Confirmed)
+				{
+					ServerConfiguration.DefaultServer = _serverPanel.Result;
+					Controls.Clear();
+					Close();
+					Dispose();
+				}
+				else if (!cancelled)
+					MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-        public static bool Confirmed { get; private set; }
+				Cursor = Cursors.Default;
+				_serverPanel.Enabled = true;
+				_apply.Enabled = true;
+				_connect.Enabled = true;
+			}));
+		}
     }
 }

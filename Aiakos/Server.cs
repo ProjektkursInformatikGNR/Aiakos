@@ -1,5 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Runtime.InteropServices;
 
 namespace Aiakos
@@ -79,7 +81,7 @@ namespace Aiakos
 		/// <summary>
 		/// Gibt über die externe Methode <seealso cref="InternetGetConnectedState(out int, int)"/> die Verfügbarkeit einer Internetverbindung wieder.
 		/// </summary>
-		public bool InternetConnectionAvailable
+		public bool InternetConnection
 		{
 			get
 			{
@@ -90,11 +92,11 @@ namespace Aiakos
 		/// <summary>
 		/// Versucht, eine Verbindung zum Server aufzubauen, und gibt den Erfolg wieder.
 		/// </summary>
-		public bool ServerAvailable
+		public bool Available
 		{
 			get
 			{
-				if (!InternetConnectionAvailable)
+				if (!InternetConnection)
 					return false;
 
 				try
@@ -102,7 +104,14 @@ namespace Aiakos
 					using (MySqlConnection con = new MySqlConnection(ToString()))
 					{
 						con.Open();
-						new MySqlCommand($"USE {Database};", con).ExecuteNonQuery();
+						MySqlDataReader reader = new MySqlCommand($"USE information_schema; SELECT TABLE_NAME FROM TABLES WHERE TABLE_SCHEMA = '{Database}';", con).ExecuteReader();
+						DataTable data = new DataTable();
+						data.Load(reader);
+						reader.Close();
+
+						List<DataRow> rows = new List<DataRow>(data.Select());
+						if (!rows.Exists(r => r[0].Equals("students")) || !rows.Exists(r => r[0].Equals("courses")) || !rows.Exists(r => r[0].Equals("choices")))
+							return false;
 					}
 				}
 				catch (Exception)

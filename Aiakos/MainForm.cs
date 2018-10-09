@@ -34,9 +34,8 @@ namespace Aiakos
             InitializeComponent();
 			Text = AppName;
             WindowState = FormWindowState.Maximized;
-			ServerConfiguration.ReadServerData();
 
-            if (ServerConfiguration.DefaultServer.ServerAvailable)
+            if (ServerConfiguration.DefaultServer.Available)
                 Initialise();
             else
 				RequestServerData(false);
@@ -182,7 +181,7 @@ namespace Aiakos
 
         private void datenAktualisierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (ServerConfiguration.DefaultServer.ServerAvailable)
+            if (ServerConfiguration.DefaultServer.Available)
                 Initialise();
             else
 				RequestServerData(true);
@@ -202,8 +201,8 @@ namespace Aiakos
 			if (error)
 				MessageBox.Show("Verbindung zum Server kann nicht aufgebaut werden!", "Verbindungsfehler!", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-			ServerConfigurationGUI.ShowDialog();
-			if (ServerConfigurationGUI.Confirmed)
+			ServerConfigurationGUI configGUI = new ServerConfigurationGUI();
+			if (configGUI.Confirmed)
 				Initialise();
 		}
     }

@@ -12,11 +12,20 @@ namespace Aiakos
     {
         private MySqlConnection connection; //Die Verbindung zum MySQL-Server
 
+		/// <summary>
+		/// Erzeugt einen neuen Datenzugriff anhand der übergegebenen Serverdaten.
+		/// </summary>
+		/// <param name="server">Die Informationen zum Server und zur SQL-Datenbank</param>
         public DataAccess(Server server)
         {
             connection = new MySqlConnection(server.ToString());
         }
 		
+		/// <summary>
+		/// Gibt die Ergebnisse einer SQL-Abfrage in einer Matrix wieder.
+		/// </summary>
+		/// <param name="cmd">Der auszuführende SQL-Befehl</param>
+		/// <returns>Die Rückgabe der Datenbank</returns>
         public object[][] GetData(string cmd)
 		{
 			connection.Open();
@@ -28,6 +37,12 @@ namespace Aiakos
 			return Array.ConvertAll(data.Select(), row => row.ItemArray);
 		}
 
+		/// <summary>
+		/// Füllt die übergebenen Dictionaries mit den Daten zur Schülerschaft, zum Wahlangebot und zu den getroffenen Wahlen durch Zugriff auf die MySQL-Datenbank.
+		/// </summary>
+		/// <param name="students">Speicherort für die Schülerdaten</param>
+		/// <param name="courses">Speicherort für das Kursangebot</param>
+		/// <param name="choices">Speicherort für die Wahlen</param>
         public void FillData(out Dictionary<int, Student> students, out Dictionary<int, Course> courses, out Dictionary<int, Choice> choices)
         {
 			students = new Dictionary<int, Student>();
@@ -52,17 +67,21 @@ namespace Aiakos
 
 			choices = new Dictionary<int, Choice>();
             foreach (object[] row in GetData("SELECT * FROM choices;"))
-            {
 				choices.Add(int.Parse(row[0].ToString()),
 					new Choice(int.Parse(row[0].ToString()),
 					string.IsNullOrEmpty(row[1]?.ToString()) ? null : int.Parse(row[1].ToString()) as int?,
 					string.IsNullOrEmpty(row[2]?.ToString()) ? null : int.Parse(row[2].ToString()) as int?,
 					string.IsNullOrEmpty(row[3]?.ToString()) ? null : int.Parse(row[3].ToString()) as int?
 				));
-			}
         }
 
-        public void UpdateDatabase(ref List<Course> courses, ref List<Student> students, ref List<Choice> choices)
+		/// <summary>
+		/// Aktualisiert die Datenbank durch Ergänzen der Datensätze aus der Datenverwaltung.
+		/// </summary>
+		/// <param name="students">Die neuen Schülerdaten</param>
+		/// <param name="courses">Die neuen Kurse</param>
+		/// <param name="choices">Die neuen Wahlen</param>
+		public void UpdateDatabase(ref List<Student> students, ref List<Course> courses, ref List<Choice> choices)
         {
             connection.Open();
 
@@ -81,15 +100,15 @@ namespace Aiakos
             connection.Close();
         }
 
+		/// <summary>
+		/// Gibt für einen Kurs und die Wahlrangfolge die Anzahl der Wahlen an.
+		/// </summary>
+		/// <param name="courseId"></param>
+		/// <param name="priority"></param>
+		/// <returns></returns>
         public int GetChoiceNumber(int courseId, int priority)
         {
-            int count = 0;
-
-            foreach (Choice choice in MainForm.Choices.Values)
-                if (choice.Courses[priority] == courseId)
-                    count++;
-
-            return count;
+			return int.Parse(GetData($"SELECT COUNT(*) FROM choices WHERE `courseId{priority + 1}`={priority};")[0][0].ToString());
         }
     }
 }

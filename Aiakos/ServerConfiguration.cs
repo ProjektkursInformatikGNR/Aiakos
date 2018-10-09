@@ -15,14 +15,53 @@ namespace Aiakos
         private const string _key = "0A43284D63694186A4881CBF341ACE02"; //Die Verschlüsselungskeys
         private const string _salt = "5FA40A1EB95D4614";
 
-		public static readonly string ConfigFile; //Der Dateiname zum Auslesen bzw. Schreiben der Config-Datei
+		public static string ConfigFile { get; private set; } //Der Dateiname zum Auslesen bzw. Schreiben der Config-Datei
 
-		public static Server DefaultServer { get; set; } //Die zu verwendende Server-Instanz
+		private static Server _defServer;
+		/// <summary>
+		/// Die als Standard festgelegten Serverdaten
+		/// </summary>
+		public static Server DefaultServer
+		{
+			get
+			{
+				if (_defServer != null)
+					return _defServer;
+
+				Dictionary<string, string> config = ReadConfig();
+
+				if (config != null)
+					foreach (KeyValuePair<string, string> kvp in config)
+					{
+						if (kvp.Key.Equals("ServerInfo"))
+						{
+							string[] data = kvp.Value.Split(';');
+							return _defServer = new Server(data[0], data[1], data[2], data[3], data[4], data[5]);
+						}
+					}
+
+				return _defServer = new Server("", "", "", "", "", "");
+			}
+
+			set
+			{
+				_defServer = value;
+				WriteConfig(new Dictionary<string, string>
+				{
+					{ "ServerInfo", string.Join(";", _defServer.Name, _defServer.Host, _defServer.Port, _defServer.UserId, _defServer.Password, _defServer.Database) }
+				});
+			}
+		}
+
+		/// <summary>
+		/// Zum Programmstart werden die Dateipfade initialisiert.
+		/// </summary>
+		static ServerConfiguration() => Initialise();
 
 		/// <summary>
 		/// Initialisiert den FileStream zur Config-Datei im AppData-Ordner.
 		/// </summary>
-		static ServerConfiguration()
+		public static void Initialise()
 		{
 			string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\AppData\Roaming\Aiakos\";
 			ConfigFile = path + "cfg.xml";
@@ -33,38 +72,7 @@ namespace Aiakos
 			if (!File.Exists(ConfigFile))
 				File.Create(ConfigFile);
 
-			DefaultServer = new Server("", "", "", "", "", "");
-		}
-
-		/// <summary>
-		/// Extrahiert die Serverdaten aus der Server-Instanz und schreibt sie in die Config-Datei.
-		/// </summary>
-		public static void WriteServerData()
-		{
-			WriteConfig(new Dictionary<string, string>
-			{
-				{ "default", string.Format("{0};{1};{2};{3};{4};{5}", DefaultServer.Name, DefaultServer.Host, DefaultServer.Port, DefaultServer.UserId, DefaultServer.Password, DefaultServer.Database) }
-			});
-		}
-
-		/// <summary>
-		/// Liest die Config-Datei aus und hinterlegt die Daten in der Server-Instanz zurück.
-		/// </summary>
-		public static void ReadServerData()
-		{
-			Dictionary<string, string> config = ReadConfig();
-
-			if (config == null)
-				return;
-
-			foreach (KeyValuePair<string, string> kvp in config)
-			{
-				if (kvp.Key.Equals("default"))
-				{
-					string[] data = kvp.Value.Split(';');
-					DefaultServer = new Server(data[0], data[1], data[2], data[3], data[4], data[5]);
-				}
-			}
+			_defServer = null;
 		}
 
 		/// <summary>
