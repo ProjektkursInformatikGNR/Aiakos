@@ -83,11 +83,13 @@ namespace Aiakos
 
             for (int priority = 0; priority < 3; priority++)
             {
-                series[priority] = new Series();
-                series[priority].Name = (priority + 1) + ". Wahl";
-                series[priority].XValueType = ChartValueType.String;
-                series[priority].Color = colors[priority];
-                series[priority].Points.DataBindXY(courseNames, choiceNumbers[priority]);
+				series[priority] = new Series
+				{
+					Name = (priority + 1) + ". Wahl",
+					XValueType = ChartValueType.String,
+					Color = colors[priority]
+				};
+				series[priority].Points.DataBindXY(courseNames, choiceNumbers[priority]);
                 series[priority].ChartType = SeriesChartType.StackedColumn;
                 chart.Series.Add(series[priority]);
 
@@ -134,10 +136,10 @@ namespace Aiakos
 
         private void Chart_PostPaint(object sender, ChartPaintEventArgs e)
         {
-            float x0 = (float)e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.X, 0);
-            float y0 = (float)e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.Y, 0);
-            float dx = Math.Abs((float)e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.X, 1) - x0);
-            float dy = Math.Abs((float)e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.Y, 1) - y0);
+            float x0 = (float) e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.X, 0);
+            float y0 = (float) e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.Y, 0);
+            float dx = Math.Abs((float) e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.X, 1) - x0);
+            float dy = Math.Abs((float) e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.Y, 1) - y0);
 
             float width = 0.8f * dx;
             Pen pen = new Pen(Color.Red, 1);
@@ -169,17 +171,17 @@ namespace Aiakos
             chart.Invalidate();
         }
 
-        private void beendenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitClick(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void serverkonfigurationToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ServerConfigClick(object sender, EventArgs e)
         {
 			RequestServerData(false);
         }
 
-        private void datenAktualisierenToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DataUpdateClick(object sender, EventArgs e)
         {
             if (ServerConfiguration.DefaultServer.Available)
                 Initialise();
@@ -187,7 +189,7 @@ namespace Aiakos
 				RequestServerData(true);
         }
 
-        private void datenverwaltungToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DataAdminClick(object sender, EventArgs e)
         {
             DataAdministration dataAd = new DataAdministration(ref Data);
             dataAd.ShowDialog();

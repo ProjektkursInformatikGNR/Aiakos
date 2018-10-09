@@ -179,7 +179,7 @@
 			this.choiceView.Name = "choiceView";
 			this.choiceView.Size = new System.Drawing.Size(570, 398);
 			this.choiceView.TabIndex = 0;
-			this.choiceView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.choiceView_CellValueChanged);
+			this.choiceView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.ChoiceView_CellValueChanged);
 			// 
 			// button1
 			// 
@@ -189,7 +189,7 @@
 			this.button1.TabIndex = 1;
 			this.button1.Text = "Anwenden";
 			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.button1.Click += new System.EventHandler(this.ConfirmClick);
 			// 
 			// button2
 			// 
@@ -199,7 +199,7 @@
 			this.button2.TabIndex = 2;
 			this.button2.Text = "Übernehmen";
 			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
+			this.button2.Click += new System.EventHandler(this.ApplyClick);
 			// 
 			// button3
 			// 
@@ -209,7 +209,7 @@
 			this.button3.TabIndex = 3;
 			this.button3.Text = "Abbrechen";
 			this.button3.UseVisualStyleBackColor = true;
-			this.button3.Click += new System.EventHandler(this.button3_Click);
+			this.button3.Click += new System.EventHandler(this.CancelClick);
 			// 
 			// Column7
 			// 
@@ -255,7 +255,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Datenverwaltung";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataAdministration_FormClosing);
-			this.SizeChanged += new System.EventHandler(this.prompt_SizeChanged);
+			this.SizeChanged += new System.EventHandler(this.Prompt_SizeChanged);
 			this.tabs.ResumeLayout(false);
 			this.coursePage.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.courseView)).EndInit();

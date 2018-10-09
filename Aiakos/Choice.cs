@@ -58,7 +58,25 @@
 		/// <returns></returns>
 		public override bool Equals(object obj)
 		{
-			return obj is Choice && (obj as Choice).StudentId == StudentId;
+			return obj is Choice o && o.StudentId == StudentId;
+		}
+
+		/// <summary>
+		/// Gibt den standardmäßig anzuzeigenden Text als Beschreibung der Instanz wieder.
+		/// </summary>
+		/// <returns>Beschreibung der Instanz</returns>
+		public override string ToString()
+		{
+			return string.Format("Wahl von {0}", MainForm.Students[StudentId].ToString());
+		}
+
+		/// <summary>
+		/// Hash-Code zur eindeutigen Zuordnung
+		/// </summary>
+		/// <returns>Hash-Code</returns>
+		public override int GetHashCode()
+		{
+			return StudentId;
 		}
 	}
 }

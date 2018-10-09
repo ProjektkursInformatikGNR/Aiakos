@@ -49,7 +49,7 @@ namespace Aiakos
 		/// <returns></returns>
 		public override bool Equals(object obj)
 		{
-			return obj is Student && Id == (obj as Student).Id;
+			return obj is Student o && Id == o.Id;
 		}
 
 		/// <summary>
@@ -59,6 +59,15 @@ namespace Aiakos
 		public override string ToString()
 		{
 			return string.Format("{0} (geb. {1})", Name, DateOfBirth.ToShortDateString());
+		}
+
+		/// <summary>
+		/// Hash-Code zur eindeutigen Zuordnung
+		/// </summary>
+		/// <returns>Hash-Code</returns>
+		public override int GetHashCode()
+		{
+			return Id;
 		}
 	}
 }

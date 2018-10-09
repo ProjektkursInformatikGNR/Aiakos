@@ -67,7 +67,7 @@
 			this.datenAktualisierenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
 			this.datenAktualisierenToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
 			this.datenAktualisierenToolStripMenuItem.Text = "Daten aktualisieren";
-			this.datenAktualisierenToolStripMenuItem.Click += new System.EventHandler(this.datenAktualisierenToolStripMenuItem_Click);
+			this.datenAktualisierenToolStripMenuItem.Click += new System.EventHandler(this.DataUpdateClick);
 			// 
 			// beendenToolStripMenuItem
 			// 
@@ -75,7 +75,7 @@
 			this.beendenToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
 			this.beendenToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
 			this.beendenToolStripMenuItem.Text = "Beenden";
-			this.beendenToolStripMenuItem.Click += new System.EventHandler(this.beendenToolStripMenuItem_Click);
+			this.beendenToolStripMenuItem.Click += new System.EventHandler(this.ExitClick);
 			// 
 			// einstellungenToolStripMenuItem
 			// 
@@ -92,7 +92,7 @@
 			this.datenverwaltungToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
 			this.datenverwaltungToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
 			this.datenverwaltungToolStripMenuItem.Text = "Datenverwaltung";
-			this.datenverwaltungToolStripMenuItem.Click += new System.EventHandler(this.datenverwaltungToolStripMenuItem_Click);
+			this.datenverwaltungToolStripMenuItem.Click += new System.EventHandler(this.DataAdminClick);
 			// 
 			// serverkonfigurationToolStripMenuItem
 			// 
@@ -100,7 +100,7 @@
 			this.serverkonfigurationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
 			this.serverkonfigurationToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
 			this.serverkonfigurationToolStripMenuItem.Text = "Serverkonfiguration";
-			this.serverkonfigurationToolStripMenuItem.Click += new System.EventHandler(this.serverkonfigurationToolStripMenuItem_Click);
+			this.serverkonfigurationToolStripMenuItem.Click += new System.EventHandler(this.ServerConfigClick);
 			// 
 			// analyseToolStripMenuItem
 			// 
@@ -126,7 +126,7 @@
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
-			this.Click += new System.EventHandler(this.beendenToolStripMenuItem_Click);
+			this.Click += new System.EventHandler(this.ExitClick);
 			this.Resize += new System.EventHandler(this.Form1_Resize);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();

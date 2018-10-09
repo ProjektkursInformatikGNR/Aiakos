@@ -61,7 +61,7 @@
 		/// <returns></returns>
 		public override bool Equals(object obj)
         {
-			return obj is Course && Id == (obj as Course).Id;
+			return obj is Course o && Id == o.Id;
         }
 
 		/// <summary>
@@ -72,5 +72,14 @@
         {
             return Name;
         }
-    }
+		
+		/// <summary>
+		/// Hash-Code zur eindeutigen Zuordnung
+		/// </summary>
+		/// <returns>Hash-Code</returns>
+		public override int GetHashCode()
+		{
+			return Id;
+		}
+	}
 }
