@@ -7,28 +7,50 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Aiakos
 {
+	/// <summary>
+	/// Die Klasse <c>MainForm</c> bildet das Hauptfenster mit seinen Funktionen ab.
+	/// </summary>
     public partial class MainForm : Form
     {
+		/// <summary>
+		/// Name des Programms
+		/// </summary>
 		public const string AppName = "Aiakos";
 
-        public static Dictionary<int, Student> Students;
-        public static Dictionary<int, Course> Courses;
-        public static Dictionary<int, Choice> Choices;
-		
-        public static DataAccess Data;
+		/// <summary>
+		/// alle Schülerinnen und Schüler mit ihren Indizes
+		/// </summary>
+		public static Dictionary<int, Student> Students;
 
-        private Chart chart = new Chart();
-        private ChartArea chartArea = new ChartArea();
-        private Series[] series = new Series[3];
-        private Color[] colors = { Color.FromArgb(255, 0, 0, 255), Color.FromArgb(126, 0, 0, 255), Color.FromArgb(40, 0, 0, 255) };
-        private HorizontalLineAnnotation[][] annotations;
-        private Legend legend = new Legend("Legend");
-        private Title title;
+		/// <summary>
+		/// alle Kurse mit ihren Indizes
+		/// </summary>
+		public static Dictionary<int, Course> Courses;
 
-        private List<string> courseNames = new List<string>();
-        private List<int>[] choiceNumbers = new List<int>[3];
-        private int highestColumn, count;
+		/// <summary>
+		/// alle Wahlen mit den Indizes der wählenden Schülerin bzw. des wählenden Schülers
+		/// </summary>
+		public static Dictionary<int, Choice> Choices;
 
+		/// <summary>
+		/// Verbindung zur Datenbank
+		/// </summary>
+		public static DataAccess Data;
+
+        private Chart chart = new Chart(); //die Grafik zur Visualisierung der Daten
+        private ChartArea chartArea = new ChartArea(); //der Container für die Grafik
+        private Series[] series = new Series[3]; //die Datensätze (jeweils einen für eine Wahlpriorität)
+        private Color[] colors = { Color.FromArgb(255, 0, 0, 255), Color.FromArgb(126, 0, 0, 255), Color.FromArgb(40, 0, 0, 255) }; //die Farben für die Säulen
+        private Legend legend = new Legend("Legend"); //die Legende der Grafik
+        private Title title; //die Überschrift der Grafik
+
+        private List<string> courseNames = new List<string>(); //eine separate Auflistung der Kursnamen
+        private List<int>[] choiceNumbers = new List<int>[3]; //Angaben zur Anzahl der Wahlen für einen Kurs mit gegebener Priorität
+		private int highestColumn; //die Höhe der höchsten Säule im Diagramm
+
+		/// <summary>
+		/// Erzeugt ein neues Hauptfenster und initialisiert die Komponenten.
+		/// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -41,10 +63,13 @@ namespace Aiakos
 				RequestServerData(false);
         }
 
+		/// <summary>
+		/// Initialisiert die Container und Objekte der GUI.
+		/// </summary>
         private void Initialise()
         {
             Data = new DataAccess(ServerConfiguration.DefaultServer);
-            Data.FillData(out Students, out Courses, out Choices);
+            Data.FillData(out Students, out Courses, out Choices); //Befüllung der Listen mit Datensätzen aus der Datenbank
 
             chart.ChartAreas.Clear();
             chart.Titles.Clear();
@@ -66,10 +91,8 @@ namespace Aiakos
                 foreach (int courseId in Courses.Keys)
                     choiceNumbers[priority].Add(Data.GetChoiceNumber(courseId, priority));
             }
-
-            annotations = new HorizontalLineAnnotation[Courses.Count][];
             
-            chart.PrePaint += Chart_PostPaint;
+            chart.PrePaint += Chart_PrePaint;
             title = chart.Titles.Add(ServerConfiguration.DefaultServer.Name);
             title.Font = new Font("Arial", 16, FontStyle.Bold);
 
@@ -94,8 +117,8 @@ namespace Aiakos
                 chart.Series.Add(series[priority]);
 
                 ToolTip tooltip1 = new ToolTip();
-                count = 0;
 
+				int count1 = 0;
                 foreach (KeyValuePair<int, Course> course in Courses)
                 {
                     string toolTip = course.Value.Name + " - " + (priority + 1) + ". Wahl:";
@@ -106,19 +129,18 @@ namespace Aiakos
                                 if (c.StudentId == student.Key)
                                     toolTip += "\n" + student.Value.ToString();
 
-                    series[priority].Points[count++].ToolTip = toolTip;
+                    series[priority].Points[count1++].ToolTip = toolTip;
                 }
             }
 
             highestColumn = 0;
-            count = 0;
-
+			int count2 = 0;
             foreach (KeyValuePair<int, Course> course in Courses)
             {
-                if (choiceNumbers[0][count] + choiceNumbers[1][count] + choiceNumbers[2][count] > highestColumn)
-                    highestColumn = choiceNumbers[0][count] + choiceNumbers[1][count] + choiceNumbers[2][count];
+				if (choiceNumbers[0][count2] + choiceNumbers[1][count2] + choiceNumbers[2][count2] > highestColumn)
+                    highestColumn = choiceNumbers[0][count2] + choiceNumbers[1][count2] + choiceNumbers[2][count2];
 
-                count++;
+                count2++;
             }
 
             foreach (KeyValuePair<int, Course> course in Courses)
@@ -134,7 +156,12 @@ namespace Aiakos
             Controls.Add(chart);
         }
 
-        private void Chart_PostPaint(object sender, ChartPaintEventArgs e)
+		/// <summary>
+		/// Aktualisiert die Grafik auf Grundlage der Daten, indem das Diagramm erneut gezeichnet wird.
+		/// </summary>
+		/// <param name="sender">Auslöser des Events (hier die <c>MainForm</c>)</param>
+		/// <param name="e">Informationen über das Event (hier v. a. absolute Koordinaten der Grafik)</param>
+        private void Chart_PrePaint(object sender, ChartPaintEventArgs e)
         {
             float x0 = (float) e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.X, 0);
             float y0 = (float) e.ChartGraphics.GetPositionFromAxis(chartArea.Name, AxisName.Y, 0);
@@ -162,21 +189,35 @@ namespace Aiakos
             }
         }
 
+		/// <summary>
+		/// Passt die Grafik an, sobald der Nutzer die Fenstergröße verändert.
+		/// </summary>
+		/// <param name="sender">Auslöser des Events (hier die MainForm)</param>
+		/// <param name="e">Informationen über das Event</param>
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (Height >= 60)
-                chart.Height = Height - 60;
+            chart.Height = Height - 60;
             chart.Width = Width;
             chart.Top = 22;
             chart.Invalidate();
         }
 
-        private void ExitClick(object sender, EventArgs e)
+		/// <summary>
+		/// Beendet das Programm, sobald der Nutzer die dafür vorgesehene Schaltfläche anklickt.
+		/// </summary>
+		/// <param name="sender">Auslöser des Events (hier die MainForm)</param>
+		/// <param name="e">Informationen über das Event</param>
+		private void ExitClick(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void ServerConfigClick(object sender, EventArgs e)
+		/// <summary>
+		/// Öffnet die Maske zur Eingabe der Serverdaten, sobald der Nutzer die dafür vorgesehene Schaltfläche anklickt.
+		/// </summary>
+		/// <param name="sender">Auslöser des Events (hier die MainForm)</param>
+		/// <param name="e">Informationen über das Event</param>
+		private void ServerConfigClick(object sender, EventArgs e)
         {
 			RequestServerData(false);
         }

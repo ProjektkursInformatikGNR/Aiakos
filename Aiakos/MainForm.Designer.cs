@@ -125,6 +125,7 @@
 			this.ClientSize = new System.Drawing.Size(884, 662);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
+			this.MinimumSize = new System.Drawing.Size(0, 60);
 			this.Name = "MainForm";
 			this.Click += new System.EventHandler(this.ExitClick);
 			this.Resize += new System.EventHandler(this.Form1_Resize);
