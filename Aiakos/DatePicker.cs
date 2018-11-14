@@ -1,48 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Aiakos
 {
+    /// <summary>
+    /// Die Klasse <c>DatePicker</c> erzeugt für den Nutzer eine Maske zur Eingabe eines Datums.
+    /// </summary>
     public partial class DatePicker : Form
     {
-        private string selectedDate = null;
+        private string selectedDate = null; //das zurzeit ausgewählte Datum
 
+        /// <summary>
+        /// Erzeugt eine neue Benutzermaske zur Eingabe eines Datums.
+        /// </summary>
         public DatePicker()
         {
-            InitializeComponent();
-            this.ShowInTaskbar = false;
+            InitializeComponent(); //initialisiert die Grafikkomponenten aus dem Designer
+            ShowInTaskbar = false; //kein Symbol in der Taskleiste
         }
 
+        /// <summary>
+        /// Das zurzeit ausgewählte Datum
+        /// </summary>
         public string SelectedDate
         {
             get { return selectedDate; }
-            set { DateTime d = new DateTime(); dateTimePicker1.Value = DateTime.TryParse(value, out d) ? d : DateTime.Today; }
+            set { dateTimePicker1.Value = DateTime.TryParse(value, out DateTime d) ? d : DateTime.Today; } //Überprüfung der Richtigkeit des Datumsformats
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Behandelt das Auswählen der Schaltfäche zur Bestätigung des Datums durch den Nutzer, indem das Datum zwischengespeichert und das Fenster geschlossen wird.
+        /// </summary>
+		/// <param name="sender">Auslöser des Events (hier der Button)</param>
+		/// <param name="e">Informationen über das Event</param>
+        private void ConfirmClick(object sender, EventArgs e)
         {
             selectedDate = dateTimePicker1.Value.ToShortDateString();
-            this.Close();
+            Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Schließt auf Aufforderung des Nutzers das Fenster.
+        /// </summary>
+		/// <param name="sender">Auslöser des Events (hier der Button)</param>
+		/// <param name="e">Informationen über das Event</param>
+        private void CancelClick(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void dateTimePicker1_KeyPress(object sender, KeyPressEventArgs e)
+        /// <summary>
+        /// Behandelt die Bestätigung ebenso wie <see cref="ConfirmClick(object, EventArgs)"/>.
+        /// </summary>
+		/// <param name="sender">Auslöser des Events (hier der DateTimePicker)</param>
+		/// <param name="e">Informationen über das Event</param>
+        private void DateTimePicker_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Return)
-            {
-                selectedDate = dateTimePicker1.Value.ToShortDateString();
-                this.Close();
-            }
+                ConfirmClick(null, EventArgs.Empty);
         }
     }
 }

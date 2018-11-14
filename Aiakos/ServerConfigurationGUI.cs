@@ -58,8 +58,9 @@ namespace Aiakos
 				}
             };
             Controls.Add(_cancel);
+            CancelButton = _cancel;
 
-			FormClosing += (sender, e) =>
+            FormClosing += (sender, e) =>
 			{
 				if (_checkConnection != null && _checkConnection.IsAlive)
 				{
@@ -93,7 +94,7 @@ namespace Aiakos
 		/// <summary>
 		/// Wird aufgerufen, wenn die Überprüfung der Serververbindung abgeschlossen ist.
 		/// </summary>
-		/// <param name="cancelled">Ist <code>TRUE</code>, wenn der Test beendet wurde, oder <code>FALSE</code>, wenn er abgebrochen wurde.</param>
+		/// <param name="cancelled">Ist <code>TRUE</code>, wenn der Test abgebrochen wurde, oder <code>FALSE</code>, wenn er beendet wurde.</param>
 		private void CheckingFinished(bool cancelled)
 		{
 			BeginInvoke(new MethodInvoker(() =>

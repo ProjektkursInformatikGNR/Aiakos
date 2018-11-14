@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.datenAktualisierenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,8 +125,9 @@
 			this.BackColor = System.Drawing.SystemColors.Control;
 			this.ClientSize = new System.Drawing.Size(884, 662);
 			this.Controls.Add(this.menuStrip1);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
-			this.MinimumSize = new System.Drawing.Size(0, 60);
+			this.MinimumSize = new System.Drawing.Size(16, 60);
 			this.Name = "MainForm";
 			this.Click += new System.EventHandler(this.ExitClick);
 			this.Resize += new System.EventHandler(this.Form1_Resize);

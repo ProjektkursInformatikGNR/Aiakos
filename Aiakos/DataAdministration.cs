@@ -8,29 +8,36 @@ using System.Reflection;
 
 namespace Aiakos
 {
+    /// <summary>
+    /// Die Klasse <c>DataAdministration</c> stellt dem Nutzer eine Maske zur Eingabe und Einsicht der Daten zur Verfügung.
+    /// </summary>
     public partial class DataAdministration : Form
 	{
+        /// <summary>
+        /// Gibt an, ob der Nutzer die Änderungen speichern möchte.
+        /// </summary>
 		public bool Apply { get; private set; }
 
-		private ContextMenuStrip context = new ContextMenuStrip();
-        private ToolStripMenuItem copyMenu = new ToolStripMenuItem("Kopieren"), pasteMenu = new ToolStripMenuItem("Einfügen"), cutMenu = new ToolStripMenuItem("Ausschneiden"), removeMenu = new ToolStripMenuItem("Löschen");
-        private DataGridView view;
-        private Assembly assembly = Assembly.GetExecutingAssembly();
-        private Bitmap copyIcon, pasteIcon, cutIcon, removeIcon;
+		private ContextMenuStrip context = new ContextMenuStrip(); //das Kontextmenü zur Tabellenmanipulation
+        private ToolStripMenuItem copyMenu = new ToolStripMenuItem("Kopieren"), pasteMenu = new ToolStripMenuItem("Einfügen"), cutMenu = new ToolStripMenuItem("Ausschneiden"), removeMenu = new ToolStripMenuItem("Löschen"); //die Items im Kontextmenü
+        private DataGridView view; //die aktuell ausgewählte Tabelle
+        private Assembly assembly = Assembly.GetExecutingAssembly(); //das Tool zum Zugriff auf Dateien innerhalb der kompilierten Anwendung
+        private Bitmap copyIcon, pasteIcon, cutIcon, removeIcon; //die Icons zur Tabellenmanipulation
 
-		private const string defaultValue = "(keine)";
+		private const string defaultValue = "(keine)"; //die Standardangabe bei fehlenden Datenbankeinträgen
 
-        public DataAdministration(ref DataAccess da)
+        public DataAdministration()
         {
-            InitializeComponent();
+            InitializeComponent(); //Initialisiert die Grafikkomponenten aus dem Designer.
             Apply = false;
             ShowInTaskbar = false;
 
-            copyIcon = new Bitmap(assembly.GetManifestResourceStream("Aiakos.copy.png"));
+            copyIcon = new Bitmap(assembly.GetManifestResourceStream("Aiakos.copy.png")); //Greift auf die Bitmaps aus der Executable zu.
             pasteIcon = new Bitmap(assembly.GetManifestResourceStream("Aiakos.paste.png"));
             cutIcon = new Bitmap(assembly.GetManifestResourceStream("Aiakos.cut.png"));
             removeIcon = new Bitmap(assembly.GetManifestResourceStream("Aiakos.remove.png"));
 
+            //Initialisierung der Icons
             copyMenu.Image = copyIcon;
             copyMenu.ShortcutKeys = Keys.Control | Keys.C;
             copyMenu.Click += new EventHandler(CopyClick);
@@ -48,6 +55,7 @@ namespace Aiakos
             removeMenu.Click += new EventHandler(RemoveClick);
             context.Items.Add(removeMenu);
 
+            //Initialisierung der Kurstabelle
             courseView.ScrollBars = ScrollBars.Both;
             courseView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             courseView.GridColor = Color.Black;
@@ -55,7 +63,7 @@ namespace Aiakos
             courseView.RowHeadersVisible = false;
             courseView.CellMouseDown += CellMouseDown;
 
-            foreach (KeyValuePair<int, Course> course in MainForm.Courses ?? new Dictionary<int, Course>())
+            foreach (KeyValuePair<int, Course> course in MainForm.Courses ?? new Dictionary<int, Course>()) //Einfügung der Daten
             {
                 DataGridViewRow row = courseView.Rows[0].Clone() as DataGridViewRow;
                 row.SetValues(new string[] {
@@ -69,6 +77,7 @@ namespace Aiakos
             coursePage.Controls.Add(courseView);
             coursePage.TabIndex = 0;
 
+            //Initialisierung der Schülertabelle
             studentView.ScrollBars = ScrollBars.Both;
             studentView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             studentView.GridColor = Color.Black;
@@ -77,7 +86,7 @@ namespace Aiakos
             studentView.CellMouseDown += CellMouseDown;
             studentView.CellClick += StudentView_CellClick;
 
-            foreach (KeyValuePair<int, Student> student in MainForm.Students ?? new Dictionary<int, Student>())
+            foreach (KeyValuePair<int, Student> student in MainForm.Students ?? new Dictionary<int, Student>()) //Einfügung der Daten
             {
                 DataGridViewRow row = studentView.Rows[0].Clone() as DataGridViewRow;
                 row.SetValues(new string[] {
@@ -92,6 +101,7 @@ namespace Aiakos
             studentPage.Controls.Add(studentView);
             studentPage.TabIndex = 0;
 
+            //Initialisierung der Wahlentabelle
             choiceView.ScrollBars = ScrollBars.Both;
             choiceView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
             choiceView.GridColor = Color.Black;
@@ -107,7 +117,7 @@ namespace Aiakos
 			(choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
 			(choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
 
-			foreach (KeyValuePair<int, Choice> choice in MainForm.Choices)
+			foreach (KeyValuePair<int, Choice> choice in MainForm.Choices) //Einfügung der Daten
 			{
 				DataGridViewRow row = choiceView.Rows[0].Clone() as DataGridViewRow;
 				row.SetValues(new object[] {
@@ -125,26 +135,51 @@ namespace Aiakos
             Controls.Add(tabs);
         }
 
+        /// <summary>
+        /// Veranlasst auf Auffoderung des Nutzers, die aktuell markierten Datensätze zu löschen.
+        /// </summary>
+		/// <param name="sender">Auslöser des Events (hier das ToolStripMenuItem)</param>
+		/// <param name="e">Informationen über das Event</param>
 		private void RemoveClick(object sender, EventArgs e)
         {
 			Remove();
         }
 
-		private void CutClick(object sender, EventArgs e)
+        /// <summary>
+        /// Veranlasst auf Auffoderung des Nutzers, die aktuell markierten Datensätze auszuschneiden.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier das ToolStripMenuItem)</param>
+        /// <param name="e">Informationen über das Event</param>
+        private void CutClick(object sender, EventArgs e)
         {
             Cut();
         }
 
-		private void PasteClick(object sender, EventArgs e)
+        /// <summary>
+        /// Veranlasst auf Auffoderung des Nutzers, die Datensätze aus der Zwischenablage einzufügen.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier das ToolStripMenuItem)</param>
+        /// <param name="e">Informationen über das Event</param>
+        private void PasteClick(object sender, EventArgs e)
         {
             Paste();
         }
 
-		private void CopyClick(object sender, EventArgs e)
+        /// <summary>
+        /// Veranlasst auf Auffoderung des Nutzers, die aktuell markierten Datensätze in die Zwischenablage zu kopieren.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier das ToolStripMenuItem)</param>
+        /// <param name="e">Informationen über das Event</param>
+        private void CopyClick(object sender, EventArgs e)
         {
             Copy();
         }
 
+        /// <summary>
+        /// Öffnet nach Rechtsklick des Nutzers das Kontextmenü.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier das DataGridView)</param>
+        /// <param name="e">Informationen über das Event</param>
 		private void CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -154,6 +189,11 @@ namespace Aiakos
             }
         }
 
+        /// <summary>
+        /// Öffnet den <see cref="DatePicker"/>, sobald der Nutzer ein für ein Datum ausgewiesenes Feld anklickt.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier das StudentView)</param>
+        /// <param name="e">Informationen über das Event</param>
 		private void StudentView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 1 && e.RowIndex != -1)
@@ -181,13 +221,11 @@ namespace Aiakos
             }
         }
 
-		private void Prompt_SizeChanged(object sender, EventArgs e)
-        {
-            tabs.Size = new Size(Width - 14, Height - 38);
-            courseView.Size = new Size(Width - 14, Height - 38);
-            studentView.Size = new Size(Width - 14, Height - 38);
-        }
-
+        /// <summary>
+        /// Behandelt die Bestätigung des Nutzers zur Speicherung der Datenänderungen und schließt das Fenster, sollte kein Fehler auftreten.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier der Button)</param>
+        /// <param name="e">Informationen über das Event</param>
         private void ConfirmClick(object sender, EventArgs e)
         {
             Apply = true;
@@ -197,22 +235,40 @@ namespace Aiakos
                 Close();
         }
 
+        /// <summary>
+        /// Behandelt die Bestätigung des Nutzers zur Speicherung, ohne das Fenster zu schließen.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier der Button)</param>
+        /// <param name="e">Informationen über das Event</param>
         private void ApplyClick(object sender, EventArgs e)
         {
             UpdateData();
         }
 
+        /// <summary>
+        /// Schließt das Fenster auf Aufforderung des Nutzers.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier der Button)</param>
+        /// <param name="e">Informationen über das Event</param>
         private void CancelClick(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Erinnert den Nutzer bei Aufforderung zum Schließen des Fensters, falls Daten nicht gespeichert sein sollten.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier die DataAdministration)</param>
+        /// <param name="e">Informationen über das Event</param>
         private void DataAdministration_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!Apply && MessageBox.Show("Sind Sie sicher?\n(Alle ungespeichert geänderten Daten gehen verloren!)", "Warnung!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 e.Cancel = true;
         }
 
+        /// <summary>
+        /// Kopiert die ausgewählten Zeilen in die Zwischenablage.
+        /// </summary>
         private void Copy()
         {
             string text = "";
@@ -220,14 +276,17 @@ namespace Aiakos
             foreach (DataGridViewRow row in view.SelectedRows)
             {
                 foreach (DataGridViewCell cell in row.Cells)
-                    text += cell.Value + "\u0009";
+                    text += cell.Value + "\u0009"; //Fügt eine Markierung zum Zellenumbruch ein.
 
-                text += "\u000D\u000A";
+                text += "\u000D\u000A"; //Fügt eine Markierung zum Zeilenumbruch ein.
             }
 
             Clipboard.SetText(text, TextDataFormat.Text);
         }
 
+        /// <summary>
+        /// Fügt die Daten aus der Zwischenablage in der aktuellen Tabelle ein.
+        /// </summary>
         private void Paste()
         {
             if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) && view != choiceView)
@@ -248,18 +307,27 @@ namespace Aiakos
             }
         }
 
+        /// <summary>
+        /// Schneidet die aktuell markierten Zeilen durch Aufruf der Methoden <see cref="Copy"/> sowie <see cref="Remove"/> aus.
+        /// </summary>
         private void Cut()
         {
             Copy();
 			Remove();
         }
 
+        /// <summary>
+        /// Löscht die zurzeit ausgewählten Zeilen.
+        /// </summary>
 		private void Remove()
 		{
 			foreach (DataGridViewRow row in view.SelectedRows)
 				view.Rows.Remove(row);
 		}
 
+        /// <summary>
+        /// Aktualisiert die Datenbank durch Einfügen der Tabellendaten.
+        /// </summary>
         private void UpdateData()
         {
 			Apply = false;
@@ -267,7 +335,8 @@ namespace Aiakos
             List<Course> courses = new List<Course>();
             foreach (DataGridViewRow row in courseView.Rows)
             {
-				if (row.Cells["Column1"].Value == null && row.Cells["Column2"].Value == null && row.Cells["Column3"].Value == null)
+                //Prüft die Kursdaten auf formale Richtigkeit.
+                if (row.Cells["Column1"].Value == null && row.Cells["Column2"].Value == null && row.Cells["Column3"].Value == null)
 					continue;
 
                 if (string.IsNullOrEmpty(row.Cells["Column1"].FormattedValue.ToString().Trim()))
@@ -310,7 +379,8 @@ namespace Aiakos
             List<Student> students = new List<Student>();
             foreach (DataGridViewRow row in studentView.Rows)
             {
-				if (row.Cells["Column4"].Value == null && row.Cells["Column5"].Value == null && row.Cells["Column6"].Value == null)
+                //Prüft die Schülerdaten auf formale Richtigkeit.
+                if (row.Cells["Column4"].Value == null && row.Cells["Column5"].Value == null && row.Cells["Column6"].Value == null)
 					continue;
                 
                 if (string.IsNullOrEmpty(row.Cells["Column4"].FormattedValue.ToString().Trim()))
@@ -351,7 +421,8 @@ namespace Aiakos
             List<Choice> choices = new List<Choice>();
             foreach (DataGridViewRow row in choiceView.Rows)
             {
-				if (row.Cells["Column7"].Value == null && row.Cells["Column8"].Value == null && row.Cells["Column9"].Value == null && row.Cells["Column10"].Value == null)
+                //Prüft die Wahldaten auf formale Richtigkeit.
+                if (row.Cells["Column7"].Value == null && row.Cells["Column8"].Value == null && row.Cells["Column9"].Value == null && row.Cells["Column10"].Value == null)
 					continue;
 
                 if (string.IsNullOrEmpty(row.Cells["Column7"].FormattedValue.ToString().Trim()))
@@ -387,18 +458,23 @@ namespace Aiakos
             MainForm.Data.UpdateDatabase(ref students, ref courses, ref choices);
         }
 
+        /// <summary>
+        /// Sucht nach Auswahl eines Schülers bzw. Kurses aus einer ComboBox das dazugehörige Objekt.
+        /// </summary>
+        /// <param name="sender">Auslöser des Events (hier die ComboBoxCell)</param>
+        /// <param name="e">Informationen über das Event</param>
 		private void ChoiceView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (choiceView.Rows.Count > 0 && e.RowIndex >= 0 && choiceView.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewComboBoxCell cell && cell.Value != null && !cell.Value.Equals(defaultValue))
 				switch (e.ColumnIndex)
 				{
-					case 0:
+					case 0: //erste Spalte --> Schüler
 						cell.Value = Array.Find(MainForm.Students.Values.ToArray(), s => s.ToString() == cell.Value.ToString());
 						break;
-					case int n when n >= 1 && n <= 3:
+					case int n when n >= 1 && n <= 3: //zweite bis vierte Spalte --> Kurs
 						cell.Value = Array.Find(MainForm.Courses.Values.ToArray(), c => c.ToString() == cell.Value.ToString());
 						break;
-					default:
+					default: //sonst: Fehler
 						cell.Value = defaultValue;
 						break;
 			}

@@ -222,7 +222,12 @@ namespace Aiakos
 			RequestServerData(false);
         }
 
-        private void DataUpdateClick(object sender, EventArgs e)
+		/// <summary>
+		/// Aktualisiert die Visualisierung der Daten, sobald der Nutzer die dafür vorgesehene Schaltfläche anklickt.
+		/// </summary>
+		/// <param name="sender">Auslöser des Events (hier die MainForm)</param>
+		/// <param name="e">Informationen über das Event</param>
+		private void DataUpdateClick(object sender, EventArgs e)
         {
             if (ServerConfiguration.DefaultServer.Available)
                 Initialise();
@@ -230,15 +235,24 @@ namespace Aiakos
 				RequestServerData(true);
         }
 
-        private void DataAdminClick(object sender, EventArgs e)
+		/// <summary>
+		/// Öffnet die Maske zur Bearbeitung der Datensätze, sobald der Nutzer die dafür vorgesehene Schaltfläche anklickt.
+		/// </summary>
+		/// <param name="sender">Auslöser des Events (hier die MainForm)</param>
+		/// <param name="e">Informationen über das Event</param>
+		private void DataAdminClick(object sender, EventArgs e)
         {
-            DataAdministration dataAd = new DataAdministration(ref Data);
+            DataAdministration dataAd = new DataAdministration();
             dataAd.ShowDialog();
 
             if (dataAd.Apply)
                 Initialise();
         }
 
+		/// <summary>
+		/// Fordert den Nutzer auf, die Serverdaten in einer neuen Serverkonfigurationsmaske zu korrigieren.
+		/// </summary>
+		/// <param name="error">Ist <c>TRUE</c>, wenn eine fehlerbehaftete Verbindung aufzubauen versucht wurde, und andernfalls <c>FALSE</c>.</param>
 		private void RequestServerData(bool error)
 		{
 			if (error)
