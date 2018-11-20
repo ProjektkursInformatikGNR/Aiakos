@@ -12,9 +12,6 @@ namespace Aiakos
 	/// </summary>
     public static class ServerConfiguration
     {
-        private const string _key = "0A43284D63694186A4881CBF341ACE02"; //Die Verschlüsselungskeys
-        private const string _salt = "5FA40A1EB95D4614";
-
 		public static string ConfigFile { get; private set; } //Der Dateiname zum Auslesen bzw. Schreiben der Config-Datei
 
 		private static Server _defServer;
@@ -118,7 +115,9 @@ namespace Aiakos
 					if (!reader.IsStartElement() || reader.Name.Equals("config"))
 						continue;
 
-					result.Add(reader.Name, Decrypt(reader.ReadElementContentAsString()));
+                    string name = reader.Name, decryptedValue;
+                    if (!string.IsNullOrEmpty(decryptedValue = Decrypt(reader.ReadElementContentAsString())))
+					    result.Add(name, decryptedValue);
 				}
 			}
 
@@ -139,8 +138,8 @@ namespace Aiakos
 
             using (AesCryptoServiceProvider aesAlg = new AesCryptoServiceProvider())
             {
-                aesAlg.Key = Encoding.Default.GetBytes(_key);
-                aesAlg.IV = Encoding.ASCII.GetBytes(_salt);
+                aesAlg.Key = MainForm.Key;
+                aesAlg.IV = MainForm.Salt;
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
                 using (MemoryStream msEncrypt = new MemoryStream())
@@ -170,14 +169,18 @@ namespace Aiakos
 
             using (AesCryptoServiceProvider aesAlg = new AesCryptoServiceProvider())
             {
-                aesAlg.Key = Encoding.ASCII.GetBytes(_key);
-                aesAlg.IV = Encoding.ASCII.GetBytes(_salt);
+                aesAlg.Key = MainForm.Key;
+                aesAlg.IV = MainForm.Salt;
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(input)))
-                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                    result = srDecrypt.ReadToEnd();
+                try
+                {
+                    using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(input)))
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        result = srDecrypt.ReadToEnd();
+                }
+                catch (Exception) { }
             }
 
             return result;

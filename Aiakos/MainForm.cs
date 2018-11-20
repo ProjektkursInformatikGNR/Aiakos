@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Management;
+using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -16,11 +18,21 @@ namespace Aiakos
 		/// Name des Programms
 		/// </summary>
 		public const string AppName = "Aiakos";
+        
+        /// <summary>
+        /// Passwort zur Verschlüsselung der Daten
+        /// </summary>
+        public static byte[] Key { get; private set; }
 
-		/// <summary>
-		/// alle Schülerinnen und Schüler mit ihren Indizes
-		/// </summary>
-		public static Dictionary<int, Student> Students;
+        /// <summary>
+        /// IV-Ergänzung zur Verschlüsselung der Daten
+        /// </summary>
+        public static byte[] Salt { get; private set; }
+
+        /// <summary>
+        /// alle Schülerinnen und Schüler mit ihren Indizes
+        /// </summary>
+        public static Dictionary<int, Student> Students;
 
 		/// <summary>
 		/// alle Kurse mit ihren Indizes
@@ -57,15 +69,27 @@ namespace Aiakos
 			Text = AppName;
             WindowState = FormWindowState.Maximized;
 
+            ManagementObject[] m = new ManagementObject[1];
+            new ManagementObjectSearcher("SELECT ProcessorId FROM Win32_processor").Get().CopyTo(m, 0);
+            byte[] processorId = Encoding.Unicode.GetBytes((string)m[0]["ProcessorId"]);
+
+            Key = new byte[32];
+            for (int i = 0; i < Key.Length; i++)
+                Key[i] = processorId[i % processorId.Length];
+
+            Salt = new byte[16];
+            for (int i = 0; i < Salt.Length; i++)
+                Salt[i] = processorId[i % processorId.Length];
+
             if (ServerConfiguration.DefaultServer.Available)
                 Initialise();
             else
 				RequestServerData(false);
         }
 
-		/// <summary>
-		/// Initialisiert die Container und Objekte der GUI.
-		/// </summary>
+        /// <summary>
+        /// Initialisiert die Container und Objekte der GUI.
+        /// </summary>
         private void Initialise()
         {
             Data = new DataAccess(ServerConfiguration.DefaultServer);
