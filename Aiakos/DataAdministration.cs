@@ -12,19 +12,22 @@ namespace Aiakos
     /// Die Klasse <c>DataAdministration</c> stellt dem Nutzer eine Maske zur Eingabe und Einsicht der Daten zur Verfügung.
     /// </summary>
     public partial class DataAdministration : Form
-	{
+    {
         /// <summary>
         /// Gibt an, ob der Nutzer die Änderungen speichern möchte.
         /// </summary>
 		public bool Apply { get; private set; }
 
-		private ContextMenuStrip context = new ContextMenuStrip(); //das Kontextmenü zur Tabellenmanipulation
+        
+
+
+        private ContextMenuStrip context = new ContextMenuStrip(); //das Kontextmenü zur Tabellenmanipulation
         private ToolStripMenuItem copyMenu = new ToolStripMenuItem("Kopieren"), pasteMenu = new ToolStripMenuItem("Einfügen"), cutMenu = new ToolStripMenuItem("Ausschneiden"), removeMenu = new ToolStripMenuItem("Löschen"); //die Items im Kontextmenü
         private DataGridView view; //die aktuell ausgewählte Tabelle
         private Assembly assembly = Assembly.GetExecutingAssembly(); //das Tool zum Zugriff auf Dateien innerhalb der kompilierten Anwendung
         private Bitmap copyIcon, pasteIcon, cutIcon, removeIcon; //die Icons zur Tabellenmanipulation
 
-		private const string defaultValue = "(keine)"; //die Standardangabe bei fehlenden Datenbankeinträgen
+        private const string defaultValue = "(keine)"; //die Standardangabe bei fehlenden Datenbankeinträgen
 
         public DataAdministration()
         {
@@ -110,26 +113,26 @@ namespace Aiakos
             choiceView.CellMouseDown += CellMouseDown;
 
             (choiceView.Columns[0] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Students.Values.ToArray());
-			(choiceView.Columns[1] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
-			(choiceView.Columns[1] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
-			(choiceView.Columns[2] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
-			(choiceView.Columns[2] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
-			(choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
-			(choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
+            (choiceView.Columns[1] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
+            (choiceView.Columns[1] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
+            (choiceView.Columns[2] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
+            (choiceView.Columns[2] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
+            (choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
+            (choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
 
-			foreach (KeyValuePair<int, Choice> choice in MainForm.Choices) //Einfügung der Daten
-			{
-				DataGridViewRow row = choiceView.Rows[0].Clone() as DataGridViewRow;
-				row.SetValues(new object[] {
-					MainForm.Students[choice.Value.StudentId],
-					choice.Value.CourseId1.HasValue ? MainForm.Courses[choice.Value.CourseId1.Value] as object : defaultValue,
-					choice.Value.CourseId2.HasValue ? MainForm.Courses[choice.Value.CourseId2.Value] as object : defaultValue,
-					choice.Value.CourseId3.HasValue ? MainForm.Courses[choice.Value.CourseId3.Value] as object : defaultValue});
-				row.Tag = choice.Value.StudentId;
-				choiceView.Rows.Add(row);
-			}
+            foreach (KeyValuePair<int, Choice> choice in MainForm.Choices) //Einfügung der Daten
+            {
+                DataGridViewRow row = choiceView.Rows[0].Clone() as DataGridViewRow;
+                row.SetValues(new object[] {
+                    MainForm.Students[choice.Value.StudentId],
+                    choice.Value.CourseId1.HasValue ? MainForm.Courses[choice.Value.CourseId1.Value] as object : defaultValue,
+                    choice.Value.CourseId2.HasValue ? MainForm.Courses[choice.Value.CourseId2.Value] as object : defaultValue,
+                    choice.Value.CourseId3.HasValue ? MainForm.Courses[choice.Value.CourseId3.Value] as object : defaultValue});
+                row.Tag = choice.Value.StudentId;
+                choiceView.Rows.Add(row);
+            }
 
-			choicePage.Controls.Add(choiceView);
+            choicePage.Controls.Add(choiceView);
             choicePage.TabIndex = 0;
 
             Controls.Add(tabs);
@@ -142,7 +145,7 @@ namespace Aiakos
 		/// <param name="e">Informationen über das Event</param>
 		private void RemoveClick(object sender, EventArgs e)
         {
-			Remove();
+            Remove();
         }
 
         /// <summary>
@@ -313,31 +316,34 @@ namespace Aiakos
         private void Cut()
         {
             Copy();
-			Remove();
+            Remove();
         }
 
         /// <summary>
         /// Löscht die zurzeit ausgewählten Zeilen.
         /// </summary>
 		private void Remove()
-		{
-			foreach (DataGridViewRow row in view.SelectedRows)
-				view.Rows.Remove(row);
-		}
+        {
+            foreach (DataGridViewRow row in view.SelectedRows)
+                view.Rows.Remove(row);
+        }
 
         /// <summary>
         /// Aktualisiert die Datenbank durch Einfügen der Tabellendaten.
         /// </summary>
         private void UpdateData()
         {
-			Apply = false;
+
+            IDataAccess ida = new DataAccess(ServerConfiguration.DefaultServer);
+
+            Apply = false;
 
             List<Course> courses = new List<Course>();
             foreach (DataGridViewRow row in courseView.Rows)
             {
                 //Prüft die Kursdaten auf formale Richtigkeit.
                 if (row.Cells["Column1"].Value == null && row.Cells["Column2"].Value == null && row.Cells["Column3"].Value == null)
-					continue;
+                    continue;
 
                 if (string.IsNullOrEmpty(row.Cells["Column1"].FormattedValue.ToString().Trim()))
                 {
@@ -364,16 +370,16 @@ namespace Aiakos
                             return;
                         }
                     }
-						
-					courses.Add(new Course(
-						row.Cells["Column1"].Value.ToString(),
-						int.Parse(row.Cells["Column2"].Value.ToString().Split('-')[0]),
-						int.Parse(row.Cells["Column2"].Value.ToString().Split('-')[1]),
-						int.Parse(row.Cells["Column3"].Value.ToString().Split('-')[0]),
-						int.Parse(row.Cells["Column3"].Value.ToString().Split('-')[1]),
-						(int) (row.Tag ?? -1)
-					));
-				}
+
+                    courses.Add(new Course(
+                        row.Cells["Column1"].Value.ToString(),
+                        int.Parse(row.Cells["Column2"].Value.ToString().Split('-')[0]),
+                        int.Parse(row.Cells["Column2"].Value.ToString().Split('-')[1]),
+                        int.Parse(row.Cells["Column3"].Value.ToString().Split('-')[0]),
+                        int.Parse(row.Cells["Column3"].Value.ToString().Split('-')[1]),
+                        (int)(row.Tag ?? -1)
+                    ));
+                }
             }
 
             List<Student> students = new List<Student>();
@@ -381,8 +387,8 @@ namespace Aiakos
             {
                 //Prüft die Schülerdaten auf formale Richtigkeit.
                 if (row.Cells["Column4"].Value == null && row.Cells["Column5"].Value == null && row.Cells["Column6"].Value == null)
-					continue;
-                
+                    continue;
+
                 if (string.IsNullOrEmpty(row.Cells["Column4"].FormattedValue.ToString().Trim()))
                 {
                     MessageBox.Show("Bitte tragen Sie einen Namen in Zeile " + (row.Index + 1) + " ein!", "Eingabefehler! - Schüler", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -394,7 +400,7 @@ namespace Aiakos
                     return;
                 }
                 else if (string.IsNullOrEmpty(row.Cells["Column6"].FormattedValue.ToString().Trim()))
-				{
+                {
                     MessageBox.Show("Bitte tragen Sie die Klasse in Zeile " + (row.Index + 1) + "  ein!", "Eingabefehler! - Schüler", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -408,14 +414,14 @@ namespace Aiakos
                             return;
                         }
                     }
-						
-					students.Add(new Student(
-						row.Cells["Column4"].Value.ToString(),
-						DateTime.Parse(row.Cells["Column5"].Value.ToString()),
-						row.Cells["Column6"].Value.ToString(),
-						(int) (row.Tag ?? -1)
-					));
-				}
+
+                    students.Add(new Student(
+                        row.Cells["Column4"].Value.ToString(),
+                        DateTime.Parse(row.Cells["Column5"].Value.ToString()),
+                        row.Cells["Column6"].Value.ToString(),
+                        (int)(row.Tag ?? -1)
+                    ));
+                }
             }
 
             List<Choice> choices = new List<Choice>();
@@ -423,7 +429,7 @@ namespace Aiakos
             {
                 //Prüft die Wahldaten auf formale Richtigkeit.
                 if (row.Cells["Column7"].Value == null && row.Cells["Column8"].Value == null && row.Cells["Column9"].Value == null && row.Cells["Column10"].Value == null)
-					continue;
+                    continue;
 
                 if (string.IsNullOrEmpty(row.Cells["Column7"].FormattedValue.ToString().Trim()))
                 {
@@ -431,31 +437,31 @@ namespace Aiakos
                     return;
                 }
 
-				foreach (DataGridViewCell cell1 in new[] { row.Cells["Column8"], row.Cells["Column9"], row.Cells["Column10"] })
-					foreach (DataGridViewCell cell2 in new[] { row.Cells["Column8"], row.Cells["Column9"], row.Cells["Column10"] })
-						if (cell1 != cell2 && cell1.Value != null && !cell1.FormattedValue.Equals(defaultValue) && cell1.FormattedValue.Equals(cell2.FormattedValue))
-						{
-							MessageBox.Show(string.Format("Der Schüler \"{0}\" kann nicht mehrmals den Kurs \"{1}\" wählen!", row.Cells["Column7"].Value as Student, cell1.FormattedValue), "Eingabefehler! - Wahlen", MessageBoxButtons.OK, MessageBoxIcon.Error);
-							return;
-						}
+                foreach (DataGridViewCell cell1 in new[] { row.Cells["Column8"], row.Cells["Column9"], row.Cells["Column10"] })
+                    foreach (DataGridViewCell cell2 in new[] { row.Cells["Column8"], row.Cells["Column9"], row.Cells["Column10"] })
+                        if (cell1 != cell2 && cell1.Value != null && !cell1.FormattedValue.Equals(defaultValue) && cell1.FormattedValue.Equals(cell2.FormattedValue))
+                        {
+                            MessageBox.Show(string.Format("Der Schüler \"{0}\" kann nicht mehrmals den Kurs \"{1}\" wählen!", row.Cells["Column7"].Value as Student, cell1.FormattedValue), "Eingabefehler! - Wahlen", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
 
-				foreach (DataGridViewRow row2 in choiceView.Rows)
+                foreach (DataGridViewRow row2 in choiceView.Rows)
                 {
                     if (row.Cells["Column7"].FormattedValue.Equals(row2.Cells["Column7"].FormattedValue) && row != row2)
                     {
-						MessageBox.Show(string.Format("Der Schüler \"{0}\" kann nicht mehrfach wählen!", row.Cells["Column7"].Value as Student), "Eingabefehler! - Wahlen", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(string.Format("Der Schüler \"{0}\" kann nicht mehrfach wählen!", row.Cells["Column7"].Value as Student), "Eingabefehler! - Wahlen", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
 
                 choices.Add(new Choice((row.Cells["Column7"].Value as Student).Id,
                     row.Cells["Column8"].Value is Course c1 ? c1.Id as int? : null,
-					row.Cells["Column9"].Value is Course c2 ? c2.Id as int? : null,
-					row.Cells["Column10"].Value is Course c3 ? c3.Id as int? : null));
+                    row.Cells["Column9"].Value is Course c2 ? c2.Id as int? : null,
+                    row.Cells["Column10"].Value is Course c3 ? c3.Id as int? : null));
             }
 
-			Apply = true;
-            MainForm.Data.UpdateDatabase(ref students, ref courses, ref choices);
+            Apply = true;
+            ida.UpdateDatabase(ref students, ref courses, ref choices);
         }
 
         /// <summary>
@@ -466,18 +472,19 @@ namespace Aiakos
 		private void ChoiceView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (choiceView.Rows.Count > 0 && e.RowIndex >= 0 && choiceView.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewComboBoxCell cell && cell.Value != null && !cell.Value.Equals(defaultValue))
-				switch (e.ColumnIndex)
-				{
-					case 0: //erste Spalte --> Schüler
-						cell.Value = Array.Find(MainForm.Students.Values.ToArray(), s => s.ToString() == cell.Value.ToString());
-						break;
-					case int n when n >= 1 && n <= 3: //zweite bis vierte Spalte --> Kurs
-						cell.Value = Array.Find(MainForm.Courses.Values.ToArray(), c => c.ToString() == cell.Value.ToString());
-						break;
-					default: //sonst: Fehler
-						cell.Value = defaultValue;
-						break;
-			}
+                switch (e.ColumnIndex)
+                {
+                    case 0: //erste Spalte --> Schüler
+                        cell.Value = Array.Find(MainForm.Students.Values.ToArray(), s => s.ToString() == cell.Value.ToString());
+                        break;
+                    case int n when n >= 1 && n <= 3: //zweite bis vierte Spalte --> Kurs
+                        cell.Value = Array.Find(MainForm.Courses.Values.ToArray(), c => c.ToString() == cell.Value.ToString());
+                        break;
+                    default: //sonst: Fehler
+                        cell.Value = defaultValue;
+                        break;
+                }
         }
     }
 }
+

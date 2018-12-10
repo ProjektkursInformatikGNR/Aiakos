@@ -44,10 +44,9 @@ namespace Aiakos
 		/// </summary>
 		public static Dictionary<int, Choice> Choices;
 
-		/// <summary>
-		/// Verbindung zur Datenbank
-		/// </summary>
-		public static DataAccess Data;
+        /// <summary>
+        /// Verbindung zur Datenbank
+        /// </summary>
 
         private Chart chart = new Chart(); //die Grafik zur Visualisierung der Daten
         private ChartArea chartArea = new ChartArea(); //der Container für die Grafik
@@ -92,8 +91,9 @@ namespace Aiakos
         /// </summary>
         private void Initialise()
         {
-            Data = new DataAccess(ServerConfiguration.DefaultServer);
-            Data.FillData(out Students, out Courses, out Choices); //Befüllung der Listen mit Datensätzen aus der Datenbank
+            IDataAccess ida = new DataAccess(ServerConfiguration.DefaultServer);
+            
+            ida.FillData(out Students, out Courses, out Choices); //Befüllung der Listen mit Datensätzen aus der Datenbank
 
             chart.ChartAreas.Clear();
             chart.Titles.Clear();
@@ -113,7 +113,7 @@ namespace Aiakos
                 choiceNumbers[priority] = new List<int>();
 
                 foreach (int courseId in Courses.Keys)
-                    choiceNumbers[priority].Add(Data.GetChoiceNumber(courseId, priority));
+                    choiceNumbers[priority].Add(ida.GetChoiceNumber(courseId, priority));
             }
             
             chart.PrePaint += Chart_PrePaint;

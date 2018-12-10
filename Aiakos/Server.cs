@@ -19,7 +19,13 @@ namespace Aiakos
 		/// <param name="port">Port des Servers (MySQL-Standard: 3306)</param>
 		/// <param name="userId">User-ID zur Authorisierung des Datenzugriffs</param>
 		/// <param name="password">Passwort zur jeweiligen User-ID</param>
-		/// <param name="database">Name der Datenbank innerhalb des Servers</param>
+		/// <param name="
+        /// 
+        /// 
+        /// 
+        /// 
+        /// 
+        /// base">Name der Datenbank innerhalb des Servers</param>
 		public Server(string name, string host, string port, string userId, string password, string database)
         {
             Name = name;

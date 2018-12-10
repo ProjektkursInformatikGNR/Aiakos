@@ -8,7 +8,7 @@ namespace Aiakos
 	/// <summary>
 	/// Die Klasse <c>DataAccess</c> bezieht die Daten aus der MySQL-Datenbank und konvertiert sie.
 	/// </summary>
-    public class DataAccess
+    public class DataAccess : IDataAccess
     {
         private MySqlConnection connection; //Die Verbindung zum MySQL-Server
 
