@@ -333,9 +333,6 @@ namespace Aiakos
         /// </summary>
         private void UpdateData()
         {
-
-            IDataAccess ida = new DataAccess(ServerConfiguration.DefaultServer);
-
             Apply = false;
 
             List<Course> courses = new List<Course>();
@@ -461,7 +458,7 @@ namespace Aiakos
             }
 
             Apply = true;
-            ida.UpdateDatabase(ref students, ref courses, ref choices);
+            MainForm.ida.UpdateDatabase(ref students, ref courses, ref choices);
         }
 
         /// <summary>

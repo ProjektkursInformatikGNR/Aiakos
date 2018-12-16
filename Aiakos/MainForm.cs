@@ -14,10 +14,12 @@ namespace Aiakos
 	/// </summary>
     public partial class MainForm : Form
     {
-		/// <summary>
-		/// Name des Programms
-		/// </summary>
-		public const string AppName = "Aiakos";
+        public static IDataAccess ida;
+
+        /// <summary>
+        /// Name des Programms
+        /// </summary>
+        public const string AppName = "Aiakos";
         
         /// <summary>
         /// Passwort zur Verschlüsselung der Daten
@@ -91,8 +93,7 @@ namespace Aiakos
         /// </summary>
         private void Initialise()
         {
-            IDataAccess ida = new DataAccess(ServerConfiguration.DefaultServer);
-            
+            ida = new DataAccess(ServerConfiguration.DefaultServer);
             ida.FillData(out Students, out Courses, out Choices); //Befüllung der Listen mit Datensätzen aus der Datenbank
 
             chart.ChartAreas.Clear();
