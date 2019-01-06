@@ -27,7 +27,7 @@ namespace Aiakos
         private Assembly assembly = Assembly.GetExecutingAssembly(); //das Tool zum Zugriff auf Dateien innerhalb der kompilierten Anwendung
         private Bitmap copyIcon, pasteIcon, cutIcon, removeIcon; //die Icons zur Tabellenmanipulation
 
-        private const string defaultValue = "(keine)"; //die Standardangabe bei fehlenden Datenbankeinträgen
+        public const string DefaultValue = "(keine)"; //die Standardangabe bei fehlenden Datenbankeinträgen
 
         public DataAdministration()
         {
@@ -113,11 +113,11 @@ namespace Aiakos
             choiceView.CellMouseDown += CellMouseDown;
 
             (choiceView.Columns[0] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Students.Values.ToArray());
-            (choiceView.Columns[1] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
+            (choiceView.Columns[1] as DataGridViewComboBoxColumn).Items.Add(DefaultValue);
             (choiceView.Columns[1] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
-            (choiceView.Columns[2] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
+            (choiceView.Columns[2] as DataGridViewComboBoxColumn).Items.Add(DefaultValue);
             (choiceView.Columns[2] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
-            (choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.Add(defaultValue);
+            (choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.Add(DefaultValue);
             (choiceView.Columns[3] as DataGridViewComboBoxColumn).Items.AddRange(MainForm.Courses.Values.ToArray());
 
             foreach (KeyValuePair<int, Choice> choice in MainForm.Choices) //Einfügung der Daten
@@ -125,9 +125,9 @@ namespace Aiakos
                 DataGridViewRow row = choiceView.Rows[0].Clone() as DataGridViewRow;
                 row.SetValues(new object[] {
                     MainForm.Students[choice.Value.StudentId],
-                    choice.Value.CourseId1.HasValue ? MainForm.Courses[choice.Value.CourseId1.Value] as object : defaultValue,
-                    choice.Value.CourseId2.HasValue ? MainForm.Courses[choice.Value.CourseId2.Value] as object : defaultValue,
-                    choice.Value.CourseId3.HasValue ? MainForm.Courses[choice.Value.CourseId3.Value] as object : defaultValue});
+                    choice.Value.CourseId1.HasValue ? MainForm.Courses[choice.Value.CourseId1.Value] as object : DefaultValue,
+                    choice.Value.CourseId2.HasValue ? MainForm.Courses[choice.Value.CourseId2.Value] as object : DefaultValue,
+                    choice.Value.CourseId3.HasValue ? MainForm.Courses[choice.Value.CourseId3.Value] as object : DefaultValue});
                 row.Tag = choice.Value.StudentId;
                 choiceView.Rows.Add(row);
             }
@@ -436,7 +436,7 @@ namespace Aiakos
 
                 foreach (DataGridViewCell cell1 in new[] { row.Cells["Column8"], row.Cells["Column9"], row.Cells["Column10"] })
                     foreach (DataGridViewCell cell2 in new[] { row.Cells["Column8"], row.Cells["Column9"], row.Cells["Column10"] })
-                        if (cell1 != cell2 && cell1.Value != null && !cell1.FormattedValue.Equals(defaultValue) && cell1.FormattedValue.Equals(cell2.FormattedValue))
+                        if (cell1 != cell2 && cell1.Value != null && !cell1.FormattedValue.Equals(DefaultValue) && cell1.FormattedValue.Equals(cell2.FormattedValue))
                         {
                             MessageBox.Show(string.Format("Der Schüler \"{0}\" kann nicht mehrmals den Kurs \"{1}\" wählen!", row.Cells["Column7"].Value as Student, cell1.FormattedValue), "Eingabefehler! - Wahlen", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
@@ -468,7 +468,7 @@ namespace Aiakos
         /// <param name="e">Informationen über das Event</param>
 		private void ChoiceView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (choiceView.Rows.Count > 0 && e.RowIndex >= 0 && choiceView.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewComboBoxCell cell && cell.Value != null && !cell.Value.Equals(defaultValue))
+            if (choiceView.Rows.Count > 0 && e.RowIndex >= 0 && choiceView.Rows[e.RowIndex].Cells[e.ColumnIndex] is DataGridViewComboBoxCell cell && cell.Value != null && !cell.Value.Equals(DefaultValue))
                 switch (e.ColumnIndex)
                 {
                     case 0: //erste Spalte --> Schüler
@@ -478,7 +478,7 @@ namespace Aiakos
                         cell.Value = Array.Find(MainForm.Courses.Values.ToArray(), c => c.ToString() == cell.Value.ToString());
                         break;
                     default: //sonst: Fehler
-                        cell.Value = defaultValue;
+                        cell.Value = DefaultValue;
                         break;
                 }
         }

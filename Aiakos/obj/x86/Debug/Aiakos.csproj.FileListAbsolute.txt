@@ -52,3 +52,4 @@ C:\Users\David\Source\Repos\ProjektkursInformatikGNR\Aiakos\Aiakos\obj\x86\Debug
 C:\Users\David\Source\Repos\ProjektkursInformatikGNR\Aiakos\Aiakos\obj\x86\Debug\Aiakos.csproj.CopyComplete
 C:\Users\David\Source\Repos\ProjektkursInformatikGNR\Aiakos\Aiakos\obj\x86\Debug\Aiakos.exe
 C:\Users\David\Source\Repos\ProjektkursInformatikGNR\Aiakos\Aiakos\obj\x86\Debug\Aiakos.pdb
+D:\Users\Joel\Documents\GitHub\Aiakos\Aiakos\obj\x86\Debug\Aiakos.ResultDisplay.resources

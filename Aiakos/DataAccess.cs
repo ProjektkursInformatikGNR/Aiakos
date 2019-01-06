@@ -108,7 +108,7 @@ namespace Aiakos
 		/// <returns></returns>
         public int GetChoiceNumber(int courseId, int priority)
         {
-			return int.Parse(GetData($"SELECT COUNT(*) FROM choices WHERE `courseId{priority + 1}`={priority};")[0][0].ToString());
+			return int.Parse(GetData($"SELECT COUNT(*) FROM choices WHERE `courseId{priority + 1}`={courseId};")[0][0].ToString());
         }
     }
 }

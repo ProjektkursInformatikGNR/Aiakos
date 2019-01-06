@@ -152,21 +152,16 @@ namespace Aiakos
                         if (c.Courses[priority] == course.Key)
                             foreach (KeyValuePair<int, Student> student in Students)
                                 if (c.StudentId == student.Key)
-                                    toolTip += "\n" + student.Value.ToString();
+                                    toolTip += Environment.NewLine + student.Value.ToString();
 
                     series[priority].Points[count1++].ToolTip = toolTip;
                 }
             }
 
             highestColumn = 0;
-			int count2 = 0;
-            foreach (KeyValuePair<int, Course> course in Courses)
-            {
+            for (int count2 = 0; count2 < Courses.Count; count2++)
 				if (choiceNumbers[0][count2] + choiceNumbers[1][count2] + choiceNumbers[2][count2] > highestColumn)
                     highestColumn = choiceNumbers[0][count2] + choiceNumbers[1][count2] + choiceNumbers[2][count2];
-
-                count2++;
-            }
 
             foreach (KeyValuePair<int, Course> course in Courses)
                 if (course.Value.MaxStudents > highestColumn)
@@ -287,5 +282,10 @@ namespace Aiakos
 			if (configGUI.Confirmed)
 				Initialise();
 		}
+
+        private void StartAnalysis(object sender, EventArgs e)
+        {
+            Calculator.Print();
+        }
     }
 }
